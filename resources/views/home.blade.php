@@ -23,7 +23,7 @@
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar">
+    <nav class="navbar tes">
         <div class="logo">KediriMapan</div>
         <ul class="nav-links" id="navLinks">
             <li><a href="#">Beranda</a></li>
