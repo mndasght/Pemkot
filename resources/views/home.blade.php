@@ -1,49 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pemerintah Kota Kediri</title>
-
-    <!-- Link CSS -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Poppins:wght@400;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-
-
-</head>
-
-<body>
-    <!-- Navbar -->
-    <nav class="navbar tes">
-        <div class="logo">KediriMapan</div>
-        <ul class="nav-links" id="navLinks">
-            <li><a href="#">Beranda</a></li>
-            <li><a href="#">Sejarah</a></li>
-            <li><a href="#">Wisata</a></li>
-            <li><a href="#">Event</a></li>
-            <li><a href="#">Berita</a></li>
-            <li><a href="#">Kontak</a></li>
-        </ul>
-        <div class="hamburger" id="hamburger">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-        </div>
-    </nav>
-
-
+@extends('layouts.app')
+@section('content')
     <!-- Hero Section -->
     <section class="hero"
-        style="background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url('{{ asset('image/hero.JPG') }}');">
+        style="background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url('{{ asset('image/heronew.png')}}');">
         <div class="hero-content">
             <h1>Selamat Datang di <span>Kota Kediri</span></h1>
             <p>Jelajahi Pesona Sejarah, Budaya, dan Wisata</p>
@@ -68,7 +27,7 @@
 
         <section class="section-story" id="story-section">
             <div class="story-container"
-                style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://placehold.co/1200x600/0D7DA3/white?text=Sejarah+1');">
+                style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://kediripedia.com/wp-content/uploads/2024/03/COLLECTIE_TROPENMUSEUM_Verhoogde_Brantasbrug_te_Kediri_Oost-Java_TMnr_10007564-1.jpg');">
                 <div class="story-content animate-on-scroll animate-slide-in-left">
                     <h2>Kediri Bercerita</h2>
                     <h3>Sejarah Kota Kediri</h3>
@@ -78,7 +37,7 @@
                         menghindari
                         perebutan tahta antara kedua puteranya.
                     </p>
-                    <a href="#" class="cta-button">
+                    <a href="{{ url('/sejarah') }}" class="cta-button">
                         Selengkapnya <span class="arrow">➜</span>
                     </a>
                 </div>
@@ -88,29 +47,17 @@
                         <span class="material-symbols-outlined">chevron_left</span>
                     </button>
                     <div id="card-slider" class="card-slider">
-                        <div class="card-item"
-                            data-background="https://placehold.co/1200x600/0D7DA3/white?text=Sejarah+1">
-                            <img src="https://placehold.co/400x600/0D7DA3/white?text=Candi" alt="Candi Penataran">
+                        <div class="card-item" data-background="https://kediripedia.com/wp-content/uploads/2024/03/COLLECTIE_TROPENMUSEUM_Verhoogde_Brantasbrug_te_Kediri_Oost-Java_TMnr_10007564-1.jpg">
+                            <img src="https://kediripedia.com/wp-content/uploads/2024/03/COLLECTIE_TROPENMUSEUM_Verhoogde_Brantasbrug_te_Kediri_Oost-Java_TMnr_10007564-1.jpg" alt="Candi Penataran">
                         </div>
-                        <div class="card-item"
-                            data-background="https://placehold.co/1200x600/1E90FF/white?text=Sejarah+2">
-                            <img src="https://placehold.co/400x600/1E90FF/white?text=Gua" alt="Gua Selomangleng">
+                        <div class="card-item" data-background="{{ asset('image/goa.webp') }}">
+                            <img src="{{ asset('image/goa.webp') }}" alt="Gua Selomangleng">
                         </div>
-                        <div class="card-item"
-                            data-background="https://placehold.co/1200x600/0D7DA3/white?text=Sejarah+3">
-                            <img src="https://placehold.co/400x600/0D7DA3/white?text=Museum" alt="Museum Airlangga">
+                        <div class="card-item" data-background="https://lh3.googleusercontent.com/gps-cs-s/AG0ilSztJpAIRZgDfPXNn0ZcDfhqWQeC1_F4Lmal_f1W-_N1Sy4i9yppuOlxyJWPLyYC9GtPdGGFgXRnBE17a4-6AlCMKS1eWdxG4lJJ0bLqvJgSvxADP_iKz7Y7RtSVGzxGeqM76ihyMA=s1360-w1360-h1020-rw">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AG0ilSztJpAIRZgDfPXNn0ZcDfhqWQeC1_F4Lmal_f1W-_N1Sy4i9yppuOlxyJWPLyYC9GtPdGGFgXRnBE17a4-6AlCMKS1eWdxG4lJJ0bLqvJgSvxADP_iKz7Y7RtSVGzxGeqM76ihyMA=s1360-w1360-h1020-rw" alt="Museum Airlangga">
                         </div>
-                        <div class="card-item"
-                            data-background="https://placehold.co/1200x600/1E90FF/white?text=Sejarah+4">
-                            <img src="https://placehold.co/400x600/1E90FF/white?text=Monumen" alt="Simpang Lima Gumul">
-                        </div>
-                        <div class="card-item"
-                            data-background="https://placehold.co/1200x600/0D7DA3/white?text=Sejarah+5">
-                            <img src="https://placehold.co/400x600/0D7DA3/white?text=Air+Terjun" alt="Air Terjun Dolo">
-                        </div>
-                        <div class="card-item"
-                            data-background="https://placehold.co/1200x600/1E90FF/white?text=Sejarah+6">
-                            <img src="https://placehold.co/400x600/1E90FF/white?text=Gunung" alt="Gunung Kelud">
+                        <div class="card-item" data-background="https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwkVcQR5hg6CjftEDSU7ObdEo9FENMetZmh40AM6WbBqXbeLoCQ6mSjnm7kU5Mk5PKLrZsCYvNTZ0IOx8rpTMM0wKrMdnZ5mTbOqZavSM-yQbruGBSADQdx5rllV3dsel8sMT2Hog=s1360-w1360-h1020-rw">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwkVcQR5hg6CjftEDSU7ObdEo9FENMetZmh40AM6WbBqXbeLoCQ6mSjnm7kU5Mk5PKLrZsCYvNTZ0IOx8rpTMM0wKrMdnZ5mTbOqZavSM-yQbruGBSADQdx5rllV3dsel8sMT2Hog=s1360-w1360-h1020-rw" alt="Simpang Lima Gumul">
                         </div>
                     </div>
                     <button class="slider-arrow" id="next-slide" aria-label="Slide berikutnya">
@@ -144,13 +91,12 @@
                 </div>
             </div>
         </section>
-        <!-- ==== END Section Nearby Places ==== -->
 
         <section class="section-popular-tours">
             <div class="popular-tours-container">
                 <div class="popular-tours-header animate-on-scroll animate-slide-up">
                     <h2>Tempat Wisata yang Populer</h2>
-                    <a href="#" class="btn-more">Selengkapnya</a>
+                    <a href="{{ url('/wisata') }}" class="btn-more">Selengkapnya</a>
                 </div>
                 <div class="popular-tours-slider-wrapper animate-on-scroll animate-stagger">
                     <button class="slider-arrow" id="prev-tour-slide" aria-label="Slide sebelumnya">
@@ -164,13 +110,15 @@
                             </div>
                         </div>
                         <div class="tour-card">
-                            <img src="{{ asset('image/goa.JPG') }}" alt="Goa Selomangkleng">
+                            <img src="{{ asset('image/goa.webp') }}"
+                                alt="Goa Selomangkleng">
                             <div class="tour-card-title">
                                 <h3>Goa Selomangkleng, Mojoroto</h3>
                             </div>
                         </div>
                         <div class="tour-card">
-                            <img src="{{ asset('image/taman_sekartaji.webp') }}" alt="Taman Sekartaji">
+                            <img src="{{ asset('image/taman_sekartaji.webp') }}"
+                                alt="Taman Sekartaji">
                             <div class="tour-card-title">
                                 <h3>Taman Sekartaji, Mojoroto
                                 </h3>
@@ -183,39 +131,10 @@
                             </div>
                         </div>
                         <div class="tour-card">
-                            <img src="{{ asset('image/museum.webp') }}" alt="Museum Airlangga">
+                            <img src="{{ asset('image/museum.webp') }}"
+                                alt="Museum Airlangga">
                             <div class="tour-card-title">
                                 <h3>Museum Airlangga, Mojoroto</h3>
-                            </div>
-                        </div>
-                        <div class="tour-card">
-                            <img src="https://placehold.co/400x600/1E90FF/white?text=Wisata+6" alt="Wisata 6">
-                            <div class="tour-card-title">
-                                <h3>Wisata 6</h3>
-                            </div>
-                        </div>
-                        <div class="tour-card">
-                            <img src="https://placehold.co/400x600/0D7DA3/white?text=Wisata+7" alt="Wisata 7">
-                            <div class="tour-card-title">
-                                <h3>Wisata 7</h3>
-                            </div>
-                        </div>
-                        <div class="tour-card">
-                            <img src="https://placehold.co/400x600/1E90FF/white?text=Wisata+8" alt="Wisata 8">
-                            <div class="tour-card-title">
-                                <h3>Wisata 8</h3>
-                            </div>
-                        </div>
-                        <div class="tour-card">
-                            <img src="https://placehold.co/400x600/0D7DA3/white?text=Wisata+9" alt="Wisata 9">
-                            <div class="tour-card-title">
-                                <h3>Wisata 9</h3>
-                            </div>
-                        </div>
-                        <div class="tour-card">
-                            <img src="https://placehold.co/400x600/1E90FF/white?text=Wisata+10" alt="Wisata 10">
-                            <div class="tour-card-title">
-                                <h3>Wisata 10</h3>
                             </div>
                         </div>
                     </div>
@@ -373,26 +292,29 @@
                         ilmu, kreativitas, maupun karakter.</p>
                 </div>
                 <div class="education-filters animate-on-scroll animate-slide-up">
-                    <button class="filter-btn active" data-filter="all">Universitas</button>
+                    <!-- Mengubah data-filter menjadi kategori spesifik -->
+                    <button class="filter-btn active" data-filter="univ">Universitas</button>
                     <button class="filter-btn" data-filter="sd">Sekolah Dasar</button>
                     <button class="filter-btn" data-filter="pesantren">Pondok Pesantren</button>
-                    <button class="filter-btn" data-filter="lainnya">Selengkapnya</button>
+                    <button class="filter-btn" data-filter="lainnya">SMA & Lainnya</button>
                 </div>
                 <div class="education-slider-wrapper animate-on-scroll animate-stagger">
                     <div class="education-grid">
-                        <div class="education-card">
+
+                        <!-- Kategori: Universitas -->
+                        <div class="education-card" data-category="univ">
                             <div class="education-card-image-wrapper">
-                                <img src="{{ asset('image/udinus.webp') }}" alt="Universitas Dian Nuswantoro">
+                                <img src="{{ asset('image/udinus.webp') }}"
+                                    alt="Universitas Dian Nuswantoro">
                             </div>
                             <div class="education-card-info">
                                 <span class="type">Universitas</span>
                                 <h3>Universitas Dian Nuswantoro PSDKU Kediri</h3>
                                 <p class="description">Universitas Dian Nuswantoro adalah salah satu perguruan tinggi
-                                    swasta terakreditasi Perguruan Tinggi Unggul yang ada di Kota Semarang, Jawa Tengah.
-                                    Kini hadir di Kota Kediri, Jawa Timur, Indonesia.</p>
+                                    swasta terakreditasi Perguruan Tinggi Unggul yang hadir di Kota Kediri.</p>
                             </div>
                         </div>
-                        <div class="education-card">
+                        <div class="education-card" data-category="univ">
                             <div class="education-card-image-wrapper">
                                 <img src="{{ asset('image/bhakti_wiyata.webp') }}"
                                     alt="Institut Ilmu Kesehatan Bhakti Wiyata">
@@ -400,36 +322,148 @@
                             <div class="education-card-info">
                                 <span class="type">Universitas</span>
                                 <h3>Institut Ilmu Kesehatan Bhakti Wiyata</h3>
-                                <p class="description">Institut Ilmu Kesehatan Bhakti Wiyata Kediri adalah sebuah
-                                    perguruan tinggi swasta yang terletak di Kediri, Jawa Timur. Perguruan tinggi ini
-                                    didirikan pada tahun 1985 oleh Yayasan Bhakti Husada dengan nama Pendidikan Bhakti
-                                    Husada.</p>
+                                <p class="description">Institut Ilmu Kesehatan pertama di Indonesia yang mencetak tenaga
+                                    kesehatan profesional.</p>
                             </div>
                         </div>
-                        <div class="education-card">
+                        <div class="education-card" data-category="univ">
                             <div class="education-card-image-wrapper">
                                 <img src="{{ asset('image/uniska.webp') }}" alt="Uniska">
                             </div>
                             <div class="education-card-info">
                                 <span class="type">Universitas</span>
                                 <h3>Universitas Islam Kadiri</h3>
-                                <p class="description">Universitas Islam Kadiri adalah suatu universitas swasta yang
-                                    didirikan serta dikelola oleh Yayasan Bina Cendekia Muslim Pancasila (YBCMP) sejak
-                                    1983.</p>
+                                <p class="description">Universitas Islam Kadiri adalah universitas swasta tertua di Kediri
+                                    yang terus berinovasi.</p>
                             </div>
                         </div>
-                        <div class="education-card">
+                        <div class="education-card" data-category="univ">
                             <div class="education-card-image-wrapper">
-                                <img src="{{ asset('image/unp.webp') }}" alt="Universitas Nusantara PGRI">
+                                <img src="{{ asset('image/unp.webp') }}"
+                                    alt="Universitas Nusantara PGRI">
                             </div>
                             <div class="education-card-info">
                                 <span class="type">Universitas</span>
                                 <h3>Universitas Nusantara PGRI</h3>
-                                <p class="description">UNP Kediri adalah Universitas Nusantara PGRI Kediri, sebuah
-                                    perguruan tinggi yang terletak di Kediri, Jawa Timur, yang bernaung di bawah YPPLP
-                                    PT-PGRI Kediri.</p>
+                                <p class="description">Kampus pencetak pendidik dan wirausahawan muda yang kompeten di
+                                    bidangnya.</p>
                             </div>
                         </div>
+
+                        <!-- Kategori: Sekolah Dasar (SD) - BARU -->
+                        <div class="education-card hidden-card" data-category="sd">
+                            <div class="education-card-image-wrapper">
+                                <img src="https://placehold.co/400x500/FFD700/333333?text=SDN+Banjaran+4"
+                                    alt="SDN Banjaran 4">
+                            </div>
+                            <div class="education-card-info">
+                                <span class="type">Sekolah Dasar</span>
+                                <h3>SDN Banjaran 4</h3>
+                                <p class="description">Salah satu sekolah dasar favorit dengan segudang prestasi akademik
+                                    dan non-akademik di Kota Kediri.</p>
+                            </div>
+                        </div>
+                        <div class="education-card hidden-card" data-category="sd">
+                            <div class="education-card-image-wrapper">
+                                <img src="https://placehold.co/400x500/0D7DA3/FFFFFF?text=SD+Santa+Maria"
+                                    alt="SDK Santa Maria">
+                            </div>
+                            <div class="education-card-info">
+                                <span class="type">Sekolah Dasar</span>
+                                <h3>SDK Santa Maria</h3>
+                                <p class="description">Sekolah dasar swasta yang mengedepankan pendidikan karakter dan
+                                    disiplin tinggi.</p>
+                            </div>
+                        </div>
+                        <div class="education-card hidden-card" data-category="sd">
+                            <div class="education-card-image-wrapper">
+                                <img src="https://placehold.co/400x500/1E90FF/FFFFFF?text=SD+Plus+Rahmat"
+                                    alt="SD Plus Rahmat">
+                            </div>
+                            <div class="education-card-info">
+                                <span class="type">Sekolah Dasar</span>
+                                <h3>SD Plus Rahmat</h3>
+                                <p class="description">Sekolah dasar berbasis Islam terpadu yang memadukan kurikulum
+                                    nasional dan keagamaan.</p>
+                            </div>
+                        </div>
+
+                        <!-- Kategori: Pondok Pesantren - BARU -->
+                        <div class="education-card hidden-card" data-category="pesantren">
+                            <div class="education-card-image-wrapper">
+                                <img src="https://placehold.co/400x500/121212/FFFFFF?text=Ponpes+Lirboyo"
+                                    alt="Ponpes Lirboyo">
+                            </div>
+                            <div class="education-card-info">
+                                <span class="type">Pondok Pesantren</span>
+                                <h3>Ponpes Lirboyo</h3>
+                                <p class="description">Salah satu pesantren terbesar dan tertua di Indonesia, menjadi pusat
+                                    studi Islam klasik.</p>
+                            </div>
+                        </div>
+                        <div class="education-card hidden-card" data-category="pesantren">
+                            <div class="education-card-image-wrapper">
+                                <img src="https://placehold.co/400x500/0D7DA3/FFFFFF?text=Ponpes+Wali+Barokah"
+                                    alt="Ponpes Wali Barokah">
+                            </div>
+                            <div class="education-card-info">
+                                <span class="type">Pondok Pesantren</span>
+                                <h3>Ponpes Wali Barokah</h3>
+                                <p class="description">Pondok pesantren besar yang terletak di pusat kota, fokus pada
+                                    pendalaman Al-Quran dan Hadits.</p>
+                            </div>
+                        </div>
+                        <div class="education-card hidden-card" data-category="pesantren">
+                            <div class="education-card-image-wrapper">
+                                <img src="https://placehold.co/400x500/1E90FF/FFFFFF?text=Ponpes+Kedunglo"
+                                    alt="Ponpes Kedunglo">
+                            </div>
+                            <div class="education-card-info">
+                                <span class="type">Pondok Pesantren</span>
+                                <h3>Ponpes Kedunglo</h3>
+                                <p class="description">Pesantren yang dikenal dengan kegiatan Mujahadah Kubro dan
+                                    pendidikan karakternya.</p>
+                            </div>
+                        </div>
+
+                        <!-- Kategori: Lainnya (SMA/SMK/Perpus) - BARU -->
+                        <div class="education-card hidden-card" data-category="lainnya">
+                            <div class="education-card-image-wrapper">
+                                <img src="https://placehold.co/400x500/FFD700/333333?text=SMAN+1+Kediri"
+                                    alt="SMAN 1 Kediri">
+                            </div>
+                            <div class="education-card-info">
+                                <span class="type">SMA Negeri</span>
+                                <h3>SMAN 1 Kediri</h3>
+                                <p class="description">Sekolah menengah atas rujukan dengan fasilitas lengkap dan lulusan
+                                    berkualitas.</p>
+                            </div>
+                        </div>
+                        <div class="education-card hidden-card" data-category="lainnya">
+                            <div class="education-card-image-wrapper">
+                                <img src="https://placehold.co/400x500/0D7DA3/FFFFFF?text=MAN+2+Kota"
+                                    alt="MAN 2 Kota Kediri">
+                            </div>
+                            <div class="education-card-info">
+                                <span class="type">Madrasah Aliyah</span>
+                                <h3>MAN 2 Kota Kediri</h3>
+                                <p class="description">Madrasah unggulan dengan berbagai program keterampilan dan prestasi
+                                    nasional.</p>
+                            </div>
+                        </div>
+                        <div class="education-card hidden-card" data-category="lainnya">
+                            <div class="education-card-image-wrapper">
+                                <img src="https://placehold.co/400x500/1E90FF/FFFFFF?text=Perpustakaan+Kota"
+                                    alt="Perpustakaan Kota Kediri">
+                            </div>
+                            <div class="education-card-info">
+                                <span class="type">Fasilitas Publik</span>
+                                <h3>Perpustakaan Kota Kediri</h3>
+                                <p class="description">Pusat literasi warga dengan koleksi buku lengkap dan ruang baca yang
+                                    nyaman.</p>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -438,7 +472,7 @@
         <!-- ==== Section Agenda (Baru) ==== -->
         <section class="section-agenda">
             <div class="agenda-container"
-                style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://i.pinimg.com/736x/f3/18/ea/f318ea99e2431b5ba84848ffc47055f7.jpg');">
+                style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://live.staticflickr.com/65535/54928693191_2360361fea.jpg');">
 
                 <div class="agenda-content animate-on-scroll animate-slide-in-left">
                     <div class="agenda-title-block">
@@ -446,15 +480,15 @@
                             <span class="title-up">Upcoming</span>
                             <span class="title-down">Agenda</span>
                         </div>
-                        <span class="material-symbols-outlined agenda-title-arrow">arrow_right_alt</span>
                     </div>
 
                     <h3>Agenda yang akan datang di Kota Kediri</h3>
                     <p>
                         Nantikan Setiap Keseruan yang akan datang di Kota Kediri
                     </p>
+                    <!-- Card Preview Kiri (Target Perubahan) -->
                     <div class="agenda-preview-card">
-                        <img src="https://i.pinimg.com/1200x/4f/78/5a/4f785a43b9d5a9a16225d8f47d3c5026.jpg"
+                        <img src="https://live.staticflickr.com/65535/54928861463_e4c182380f_z.jpg"
                             alt="Agenda Highlight">
                         <div class="agenda-preview-card-info">
                             <h4>Dhoho Street Fashion 2024</h4>
@@ -468,7 +502,21 @@
                     </button>
 
                     <div class="agenda-list-scroller" id="agenda-list-scroller">
-                        <div class="agenda-list-item">
+                        <!-- Menambahkan data-image pada setiap item -->
+                        <div class="agenda-list-item active"
+                            data-image="https://live.staticflickr.com/65535/54928861463_e4c182380f_z.jpg">
+                            <div class="agenda-date">
+                                <span class="month">NOV</span>
+                                <span class="day">10</span>
+                            </div>
+                            <div class="agenda-item-info">
+                                <h4>Dhoho Street Fashion 2024</h4>
+                                <p>Pagelaran busana tahunan kebanggaan Kota Kediri.</p>
+                            </div>
+                        </div>
+
+                        <div class="agenda-list-item"
+                            data-image="https://live.staticflickr.com/65535/54927793167_204cdeaff1_w.jpg">
                             <div class="agenda-date">
                                 <span class="month">NOV</span>
                                 <span class="day">15</span>
@@ -478,7 +526,8 @@
                                 <p>Pawai budaya dan lampion di sepanjang Jl. Dhoho.</p>
                             </div>
                         </div>
-                        <div class="agenda-list-item">
+                        <div class="agenda-list-item"
+                            data-image="https://live.staticflickr.com/65535/54928906499_675f77ab09_w.jpg">
                             <div class="agenda-date">
                                 <span class="month">NOV</span>
                                 <span class="day">22</span>
@@ -488,7 +537,8 @@
                                 <p>Pesta rakyat merayakan kuliner khas Kediri, Tahu Takwa.</p>
                             </div>
                         </div>
-                        <div class="agenda-list-item">
+                        <div class="agenda-list-item"
+                            data-image="https://live.staticflickr.com/65535/54928861468_efc1848c1d.jpg">
                             <div class="agenda-date">
                                 <span class="month">DEC</span>
                                 <span class="day">05</span>
@@ -499,7 +549,8 @@
                             </div>
                         </div>
                         <!-- Tambahkan item agenda lagi di sini untuk menguji scroll -->
-                        <div class="agenda-list-item">
+                        <div class="agenda-list-item"
+                            data-image="https://live.staticflickr.com/65535/54928906504_2099c47f19_c.jpg">
                             <div class="agenda-date">
                                 <span class="month">DEC</span>
                                 <span class="day">18</span>
@@ -507,16 +558,6 @@
                             <div class="agenda-item-info">
                                 <h4>Pentas Seni Akhir Tahun</h4>
                                 <p>Pagelaran seni dan budaya di Taman Sekartaji.</p>
-                            </div>
-                        </div>
-                        <div class="agenda-list-item">
-                            <div class="agenda-date">
-                                <span class="month">JAN</span>
-                                <span class="day">01</span>
-                            </div>
-                            <div class="agenda-item-info">
-                                <h4>Kediri Car Free Night</h4>
-                                <p>Perayaan malam tahun baru di Simpang Lima Gumul.</p>
                             </div>
                         </div>
                     </div>
@@ -539,11 +580,9 @@
                         <img src="https://placehold.co/1200x800/0D7DA3/FFFFFF?text=Blog+Image" alt="Blog Image">
                         <div class="gallery-blog-info">
                             <div class="blog-date">10 NOVEMBER 2025</div>
-                            <h3>Menjelajahi Keindahan Tersembunyi di Air Terjun Dolo</h3>
+                            <h3>Selomangkleng : Goa Estetik, Feed Kece!</h3>
                             <p>
-                                Temukan pesona Air Terjun Dolo yang menawan, surga tersembunyi di lereng Gunung Wilis
-                                yang
-                                menawarkan kesegaran dan pemandangan...
+                                Jadi gini gann ada yang tau goa selomangkleng? ya goa kan
                             </p>
                             <a href="#" class="blog-read-more">
                                 Baca Selengkapnya <span class="arrow">➜</span>
@@ -561,10 +600,10 @@
                         </div>
                     </div>
                     <div class="gallery-full-card animate-on-scroll animate-slide-up"
-                        style="background-image: url('https://placehold.co/1200x800/1E90FF/FFFFFF?text=Simpang+Lima+Gumul+Malam');">
+                        style="background-image: url('{{ asset('image/heronew.png') }}');">
                         <div class="gallery-full-content">
-                            <h3>Video Terbaru: Pesona Malam Hari Simpang Lima Gumul</h3>
-                            <p>Lihat bagaimana ikon Kota Kediri ini bersinar di malam hari.</p>
+                            <h3>Tips Mendapatkan Cewek Cakep di Kota Kediri</h3>
+                            <p>Lihat bagaimana keindahan Kota Kediri ini bersinar di malam hari.</p>
                             <div class="gallery-full-tags">
                                 <a href="#" class="gallery-tag">Google</a>
                                 <a href="#" class="gallery-tag">Trending</a>
@@ -576,91 +615,4 @@
             </div>
         </section>
     </main>
-    <!-- ==== FOOTER BARU ==== -->
-
-    <!-- Bagian Gambar Pre-Footer (LAPOR) -->
-    <div class="pre-footer-image" style="background-image: url('{{ asset('image/footer.webp') }}');">
-
-        <!-- Konten Lapor (BARU) -->
-        <div class="lapor-content-wrapper">
-            <div class="lapor-image">
-                <img src="{{ asset('image/112.png') }}" alt="Lapor Mbak Wali">
-            </div>
-            <div class="lapor-details">
-                <h2>Lapor Mbak Wali 112</h2>
-                <p>Sampaikan aduan, kritik, dan saran Anda untuk membangun Kota Kediri menjadi lebih baik. Kami siap
-                    merespon dengan cepat.</p>
-                <div class="lapor-search-box">
-                    <span class="material-symbols-outlined">confirmation_number</span>
-                    <input type="text" placeholder="Cari nomor tiket aduan Anda...">
-                    <button type="submit">Cek Aduan</button>
-                </div>
-            </div>
-            <!-- GAMBAR KANAN BARU -->
-            <div class="lapor-image">
-                <img src="{{ asset('image/rsz_fotkanan.png') }}" alt="Aduan 112">
-            </div>
-        </div>
-
-    </div>
-    <!-- Footer Utama -->
-    <footer class="site-footer">
-        <div class="footer-container">
-            <!-- Kolom 1: Logo & Semboyan -->
-            <div class="footer-column">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Logo_Kota_Kediri_-_Seal_of_Kediri_City.svg" alt="Logo Pemkot Kediri"
-                    class="footer-logo">
-                <p>"Kediri Harmoni, Kota Berbudaya dan Melayani"</p>
-            </div>
-            <!-- Kolom 2: Navigation -->
-            <div class="footer-column">
-                <h3>Navigation</h3>
-                <ul class="footer-links">
-                    <li><a href="#">Beranda</a></li>
-                    <li><a href="#">Sejarah</a></li>
-                    <li><a href="#">Wisata</a></li>
-                    <li><a href="#">Event</a></li>
-                    <li><a href="#">Berita</a></li>
-                </ul>
-            </div>
-            <!-- Kolom 3: Contact Us -->
-            <div class="footer-column">
-                <h3>Contact Us</h3>
-                <ul class="footer-links">
-                    <li>(0354) 123456</li>
-                    <li>kontak@kedirikota.go.id</li>
-                    <li>Jl.Basuki Rahmat No.15, Kediri</li>
-                </ul>
-            </div>
-            <!-- Kolom 4: Learn More -->
-            <div class="footer-column">
-                <h3>Learn More</h3>
-                <ul class="footer-links">
-                    <li><a href="#">Gallery</a></li>
-                    <li><a href="#">Jobs</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
-            </div>
-            <!-- Kolom 5: Social Media -->
-            <div class="footer-column">
-                <h3>Social Media</h3>
-                <div class="footer-social-links">
-                    <!-- Placeholder untuk ikon, menggunakan inisial -->
-                    <a href="#" class="fab fa-facebook-f" aria-label="Facebook"></a>
-                    <a href="#" class="fab fa-twitter" aria-label="Twitter"></a>
-                    <a href="#" class="fab fa-instagram" aria-label="Instagram"></a>
-                    <a href="#" class="fab fa-youtube" aria-label="YouTube"></a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            &copy; 2025 Pemerintah Kota Kediri. All rights reserved.
-        </div>
-    </footer>
-    <!-- ==== END FOOTER ==== -->
-
-    <script src="{{ asset('js/app.js') }}" defer></script>
-</body>
-
-</html>
+@endsection

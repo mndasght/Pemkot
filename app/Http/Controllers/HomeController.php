@@ -11,4 +11,10 @@ class HomeController extends Controller
         $data = Hero::where('is_active', true)->first();
         return view ('home', compact('data'));
     }
+    public function sejarah(){
+        return view ('sejarah');
+    }
+    public function wisata(){
+        return view ('wisata');
+    }
 }
