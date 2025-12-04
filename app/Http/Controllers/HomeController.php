@@ -17,4 +17,7 @@ class HomeController extends Controller
     public function wisata(){
         return view ('wisata');
     }
+    public function detail_wisata(){
+        return view ('wisata_detail');
+    }
 }
