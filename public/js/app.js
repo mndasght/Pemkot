@@ -5,6 +5,113 @@ document.addEventListener("DOMContentLoaded", function () {
     const navbar = document.querySelector(".navbar");
     const heroSection = document.querySelector(".hero"); // Referensi ke elemen Hero
 
+    // Elemen pencarian baru
+    const searchInput = document.getElementById("searchInput");
+    const searchButton = document.getElementById("searchButton");
+    const allContentSections = document.querySelectorAll(
+        ".page-content > section"
+    );
+    const noResultsMessage = document.getElementById("noResultsMessage");
+
+    // --- Logika Floating Search (BARU) ---
+    const floatingSearchButton = document.getElementById(
+        "floatingSearchButton"
+    );
+    const heroSearchBox = document.querySelector(".search-box");
+
+    const updateFloatingButton = () => {
+        const triggerHeight = heroSection
+            ? heroSection.offsetHeight * 0.8
+            : 500; // Muncul setelah 80% Hero
+        if (window.scrollY > triggerHeight) {
+            floatingSearchButton.classList.add("visible");
+        } else {
+            floatingSearchButton.classList.remove("visible");
+        }
+    };
+
+    floatingSearchButton.addEventListener("click", () => {
+        // Gulir ke kotak pencarian di Hero
+        if (heroSearchBox) {
+            heroSearchBox.scrollIntoView({ behavior: "smooth" });
+            // Fokuskan input setelah menggulir
+            setTimeout(() => {
+                searchInput.focus();
+            }, 500); // Beri sedikit waktu untuk scroll
+        }
+    });
+
+    // Tambahkan listener untuk floating button ke window scroll
+    window.addEventListener("scroll", updateFloatingButton);
+    updateFloatingButton(); // Panggil sekali saat load
+    // --- End Logika Floating Search ---
+
+    // --- Logika Pencarian ---
+    searchButton.addEventListener("click", () => {
+        performSearch();
+    });
+
+    // Logika Pencarian Baris 2: Search Input Enter Key
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            performSearch();
+        }
+    });
+
+    // Logika Pencarian Baris 3: Fungsi inti (Diperbarui untuk pencarian teks penuh dan filtering total)
+    function performSearch() {
+        const query = searchInput.value.toLowerCase().trim();
+
+        if (query === "") {
+            // Tampilkan semua section jika query kosong
+            allContentSections.forEach((section) => {
+                section.classList.remove("hidden-section");
+            });
+            noResultsMessage.classList.add("hidden-section");
+            document
+                .getElementById("story-section")
+                .scrollIntoView({ behavior: "smooth" });
+            return;
+        }
+
+        let foundMatch = false;
+        let firstMatchSection = null;
+
+        // 1. Sembunyikan semua section dan pesan "Tidak Ada Hasil" di awal
+        allContentSections.forEach((section) => {
+            section.classList.add("hidden-section");
+        });
+        noResultsMessage.classList.add("hidden-section");
+
+        // 2. Loop dan cari kecocokan di SEMUA section (termasuk Story dan Nearby)
+        allContentSections.forEach((section) => {
+            // Ambil SEMUA teks yang terlihat di dalam section
+            const content = section.textContent || "";
+
+            if (content.toLowerCase().includes(query)) {
+                section.classList.remove("hidden-section");
+                foundMatch = true;
+                if (!firstMatchSection) {
+                    firstMatchSection = section;
+                }
+            }
+        });
+
+        // 3. Tampilkan pesan "Tidak Ada Hasil" atau gulir ke hasil pertama
+        if (foundMatch) {
+            // Gulir ke section pertama yang ditemukan
+            if (firstMatchSection) {
+                firstMatchSection.scrollIntoView({ behavior: "smooth" });
+            }
+        } else {
+            // Tampilkan pesan "Tidak Ada Hasil"
+            noResultsMessage.classList.remove("hidden-section");
+            // Gulir ke pesan notifikasi
+            noResultsMessage.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+    // --- End Logika Pencarian ---
+
     hamburger.addEventListener("click", () => {
         navLinks.classList.toggle("active");
         hamburger.classList.toggle("active");
@@ -20,20 +127,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Navbar Scroll Effect
-    // Mengubah logika scroll: Navbar transparan sampai melewati Hero Section
     const updateNavbarBackground = () => {
-        const triggerHeight = heroSection ? heroSection.offsetHeight - 80 : 100; // 80px buffer sebelum hero berakhir
+        const triggerHeight = heroSection ? heroSection.offsetHeight - 80 : 100;
 
         if (window.scrollY > triggerHeight) {
             navbar.classList.add("scrolled");
         } else {
             navbar.classList.remove("scrolled");
         }
+
+        // Panggil updateFloatingButton di sini juga untuk memastikan sinkronisasi
+        updateFloatingButton();
     };
 
     window.addEventListener("scroll", updateNavbarBackground);
-
-    // Panggil sekali saat load untuk antisipasi jika halaman di-refresh pada posisi scroll bawah
     updateNavbarBackground();
 
     // Animate elements on scroll
@@ -62,11 +169,96 @@ document.addEventListener("DOMContentLoaded", function () {
     initializeScrollButton();
     initializeAgendaScroller();
     initializeAgendaInteractivity(); // Panggil fungsi interaksi baru
+    initializeVideoModal(); // Panggil fungsi modal video baru
 
     // Initialize filter buttons (termasuk yang baru)
     initializeFilterButtons(".education-filters .filter-btn");
     initializeFilterButtons(".nearby-places-filters .filter-btn");
 });
+
+// *** FITUR INTERAKTIF BARU: Video Modal Logic ***
+function initializeVideoModal() {
+    const modal = document.getElementById("videoModal");
+    const closeBtn = document.querySelector(".video-modal-close");
+    const videoFrame = document.getElementById("modalVideoFrame");
+    const btnJelajahi = document.getElementById("btn-jelajahi-kota");
+    const btnLayanan = document.getElementById("btn-cek-layanan");
+
+    // Fungsi untuk mengekstrak ID YouTube dari URL atau ID langsung
+    const extractVideoId = (url) => {
+        // Kasus 1: ID langsung (misalnya, 'dQw4w9WgXcQ')
+        if (!url.includes("http")) {
+            return url;
+        }
+
+        // Kasus 2: URL lengkap atau youtu.be
+        try {
+            const urlObj = new URL(url);
+            if (urlObj.hostname.includes("youtube.com")) {
+                return urlObj.searchParams.get("v");
+            } else if (urlObj.hostname.includes("youtu.be")) {
+                return urlObj.pathname.substring(1);
+            }
+        } catch (e) {
+            console.error("Invalid video URL format:", url);
+        }
+        return null;
+    };
+
+    const openModal = (videoUrl) => {
+        const videoId = extractVideoId(videoUrl);
+        if (!videoId) return;
+
+        // Gunakan ID yang sudah terverifikasi untuk iframe
+        const youtubeEmbedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        videoFrame.src = youtubeEmbedUrl;
+        modal.classList.add("open");
+        // Menghentikan scroll pada body saat modal terbuka
+        document.body.style.overflow = "hidden";
+    };
+
+    const closeModal = () => {
+        modal.classList.remove("open");
+        // Hentikan video dengan menghapus src (penting agar video berhenti berputar di background)
+        videoFrame.src = "";
+        // Mengembalikan scroll pada body
+        document.body.style.overflow = "";
+    };
+
+    // Event listener untuk tombol "Jelajahi Kota"
+    if (btnJelajahi) {
+        btnJelajahi.addEventListener("click", (e) => {
+            e.preventDefault();
+            // Menggunakan ID placeholder yang teruji
+            const videoId = "dQw4w9WgXcQ";
+            openModal(videoId);
+        });
+    }
+
+    // Event listener untuk tombol "Cek Layanan"
+    if (btnLayanan) {
+        btnLayanan.addEventListener("click", (e) => {
+            e.preventDefault();
+            // Menggunakan ID placeholder yang teruji
+            const videoId = "dQw4w9WgXcQ";
+            openModal(videoId);
+        });
+    }
+
+    // Event listener untuk tombol Close (X)
+    if (closeBtn) {
+        closeBtn.addEventListener("click", closeModal);
+    }
+
+    // Event listener untuk menutup modal saat mengklik di luar konten (overlay)
+    if (modal) {
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    }
+}
 
 // *** FITUR INTERAKTIF BARU: Objek untuk query peta ***
 const mapQueries = {
@@ -116,9 +308,7 @@ function initializeFilterButtons(selector) {
             // *** FITUR INTERAKTIF BARU: Ganti source iframe peta ***
             if (parent.classList.contains("nearby-places-filters")) {
                 const filter = button.dataset.filter;
-                const mapIframe = document.querySelector(
-                    ".nearby-places-map iframe"
-                );
+                const mapIframe = document.getElementById("nearby-map-iframe");
                 if (mapIframe && mapQueries[filter]) {
                     mapIframe.src = mapQueries[filter];
                 }
@@ -348,15 +538,16 @@ function initializeAgendaScroller() {
 // Fungsi Baru: Mengatur interaksi klik pada list agenda
 function initializeAgendaInteractivity() {
     const agendaItems = document.querySelectorAll(".agenda-list-item");
-    const previewImage = document.querySelector(".agenda-preview-card img");
-    const previewTitle = document.querySelector(".agenda-preview-card-info h4");
+    const previewCard = document.querySelector(".agenda-preview-card");
+    const previewImage = previewCard ? previewCard.querySelector("img") : null;
+    const previewTitle = previewCard
+        ? previewCard.querySelector(".agenda-preview-card-info h4")
+        : null;
 
     if (!agendaItems.length || !previewImage || !previewTitle) return;
 
     agendaItems.forEach((item) => {
         item.addEventListener("click", function () {
-            // Prevent rapid clicking issues if needed, but for simple toggle it's okay.
-
             // 1. Hapus kelas active dari semua item
             agendaItems.forEach((i) => i.classList.remove("active"));
 
@@ -370,7 +561,6 @@ function initializeAgendaInteractivity() {
             ).innerText;
 
             // 4. Update card preview dengan efek fade dan slide halus
-
             // State 1: Fade Out & Slide Down sedikit
             previewImage.style.opacity = "0";
             previewTitle.style.opacity = "0";
@@ -392,28 +582,24 @@ function initializeAgendaInteractivity() {
         });
     });
 }
-// sejarah page
+
 document.addEventListener("DOMContentLoaded", function () {
-    // Navbar Logic
     const navbar = document.querySelector(".navbar");
     window.addEventListener("scroll", () => {
         if (window.scrollY > 10) navbar.classList.add("scrolled");
         else navbar.classList.remove("scrolled");
     });
 
-    // Hero Slider Logic (Dots Integration)
     const slider = document.getElementById("heroSlider");
     const heroSection = document.getElementById("heroSection");
     const cards = document.querySelectorAll(".hero-card-item");
     const dotsContainer = document.getElementById("sliderDots");
 
-    // 1. Buat Dots sesuai jumlah card
     cards.forEach((card, index) => {
         const dot = document.createElement("div");
         dot.classList.add("slider-dot");
         if (index === 0) dot.classList.add("active");
 
-        // Event klik pada dot
         dot.addEventListener("click", () => {
             activateCard(index);
         });
@@ -423,25 +609,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const dots = document.querySelectorAll(".slider-dot");
 
-    // 2. Fungsi Utama Aktivasi Card
     function activateCard(index) {
         const targetCard = cards[index];
 
-        // Update Active States (Card & Dot)
         cards.forEach((c) => c.classList.remove("active"));
         dots.forEach((d) => d.classList.remove("active"));
 
         targetCard.classList.add("active");
         if (dots[index]) dots[index].classList.add("active");
 
-        // Ganti Background
         const newBg = targetCard.getAttribute("data-bg");
         heroSection.style.backgroundImage = `url('${newBg}')`;
 
-        // Scroll ke tengah
         const sliderWidth = slider.clientWidth;
         const cardWidth = targetCard.offsetWidth;
-        // Offset untuk centering: posisi card - (setengah container) + (setengah card)
+
         const targetScroll =
             targetCard.offsetLeft - sliderWidth / 2 + cardWidth / 2;
 
@@ -451,7 +633,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 3. Event Listener untuk Card Click
     cards.forEach((card, index) => {
         card.addEventListener("click", () => {
             activateCard(index);
@@ -461,14 +642,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // wisata page
 document.addEventListener("DOMContentLoaded", function () {
-    // 1. Navbar
     const navbar = document.querySelector(".navbar");
     window.addEventListener("scroll", () => {
         if (window.scrollY > 10) navbar.classList.add("scrolled");
         else navbar.classList.remove("scrolled");
     });
 
-    // 2. Hero Slider & Dots
     const heroSection = document.getElementById("heroSection");
     const heroTitle = document.getElementById("heroTitle");
     const heroDesc = document.getElementById("heroDesc");
@@ -540,4 +719,67 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+});
+
+// wisata detail
+document.addEventListener("DOMContentLoaded", function () {
+    const navbar = document.querySelector(".navbar");
+    const hamburger = document.getElementById("hamburger");
+    const navLinks = document.getElementById("navLinks");
+
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 10) navbar.classList.add("scrolled");
+        else navbar.classList.remove("scrolled");
+    });
+
+    hamburger.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+    });
+
+    // Hero Interaction
+    const heroSection = document.getElementById("heroSection");
+    const heroBgVideo = document.getElementById("heroBgVideo");
+    const cards = document.querySelectorAll(".hero-card");
+
+    cards.forEach((card) => {
+        card.addEventListener("click", function () {
+            const type = this.getAttribute("data-type");
+            const src = this.getAttribute("data-src");
+
+            cards.forEach((c) => c.classList.remove("active"));
+            this.classList.add("active");
+
+            if (type === "video") {
+                heroBgVideo.src = src;
+                heroBgVideo.classList.add("active");
+                heroBgVideo
+                    .play()
+                    .catch((e) => console.log("Autoplay prevented:", e));
+            } else {
+                heroBgVideo.classList.remove("active");
+                heroBgVideo.pause();
+                heroBgVideo.src = "";
+
+                const img = new Image();
+                img.src = src;
+                img.onload = () => {
+                    heroSection.style.backgroundImage = `url('${src}')`;
+                };
+            }
+        });
+    });
+
+    // Animasi Progress Bar saat scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.style.width = entry.target
+                    .getAttribute("style")
+                    .split("width:")[1];
+            }
+        });
+    });
+    document
+        .querySelectorAll(".progress-bar")
+        .forEach((bar) => observer.observe(bar));
 });
