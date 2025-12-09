@@ -17,15 +17,15 @@ composer install
 
 npm install
 
-3. Copy file environment
+2. Copy file environment
    
 cp .env.example .env
 
-5. Generate key Laravel
+3. Generate key Laravel
    
 php artisan key:generate
 
-7. Konfigurasi database & .env
+4. Konfigurasi database & .env
 
 Sesuaikan berisi seperti:
 
@@ -46,6 +46,6 @@ DB_PASSWORD=
    
 php artisan migrate
 
-7. Jalankan server Laravel
+6. Jalankan server Laravel
    
 php artisan serve
