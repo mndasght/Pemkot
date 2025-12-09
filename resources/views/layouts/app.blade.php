@@ -13,7 +13,6 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Poppins:wght@400;600;700&display=swap"
         rel="stylesheet">
-    <!-- Google Material Icons -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -21,14 +20,19 @@
 </head>
 
 <body>
+    <!-- Floating Search Button -->
+    <button id="floatingSearchButton" aria-label="Cari di halaman ini">
+        <span class="material-symbols-outlined">search</span>
+    </button>
+
     <!-- Navbar -->
     <nav class="navbar">
         <div class="logo">KediriMapan</div>
         <ul class="nav-links" id="navLinks">
-            <li><a href="#">Beranda</a></li>
-            <li><a href="#">Sejarah</a></li>
-            <li><a href="#">Wisata</a></li>
-            <li><a href="#">Event</a></li>
+            <li><a href="#hero-section">Beranda</a></li>
+            <li><a href="#story-section">Sejarah</a></li>
+            <li><a href="#nearby-section">Wisata</a></li>
+            <li><a href="#tours-section">Kuliner</a></li>
             <li><a href="#">Berita</a></li>
             <li><a href="#">Kontak</a></li>
         </ul>
@@ -39,12 +43,16 @@
         </div>
     </nav>
     @yield('content')
-    <div class="pre-footer-image" style="background-image: url('{{ asset('image/footer.webp') }}');">
+    <!-- ==== FOOTER BARU ==== -->
+
+    <!-- Bagian Gambar Pre-Footer (LAPOR) -->
+    <div class="pre-footer-image"
+        style="background-image: url('{{ asset('image/footer.webp') }}');">
 
         <!-- Konten Lapor (BARU) -->
         <div class="lapor-content-wrapper">
             <div class="lapor-image">
-                <img src="{{ asset('image/112.png') }}" alt="Lapor Mbak Wali">
+                <img src="{{ asset('image/112.png') }}">
             </div>
             <div class="lapor-details">
                 <h2>Lapor Mbak Wali 112</h2>
@@ -58,17 +66,19 @@
             </div>
             <!-- GAMBAR KANAN BARU -->
             <div class="lapor-image">
-                <img src="{{ asset('image/rsz_fotkanan.png') }}" alt="Aduan 112">
+                <img src="https://placehold.co/400x350/ffffff/1E90FF?text=QR+Code+Lapor"
+                    alt="Layanan Lapor Mbak Wali via QR Code">
             </div>
         </div>
 
     </div>
+    <!-- Footer Utama -->
     <footer class="site-footer">
         <div class="footer-container">
             <!-- Kolom 1: Logo & Semboyan -->
             <div class="footer-column">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Logo_Kota_Kediri_-_Seal_of_Kediri_City.svg"
-                    alt="Logo Pemkot Kediri" class="footer-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Logo_Kota_Kediri_-_Seal_of_Kediri_City.svg/1957px-Logo_Kota_Kediri_-_Seal_of_Kediri_City.svg.png" alt="Logo Pemkot Kediri"
+                    class="footer-logo">
                 <p>"Kediri Harmoni, Kota Berbudaya dan Melayani"</p>
             </div>
             <!-- Kolom 2: Navigation -->
@@ -80,6 +90,7 @@
                     <li><a href="#">Wisata</a></li>
                     <li><a href="#">Event</a></li>
                     <li><a href="#">Berita</a></li>
+                    <li><a href="#">Kontak</a></li>
                 </ul>
             </div>
             <!-- Kolom 3: Contact Us -->
@@ -88,7 +99,7 @@
                 <ul class="footer-links">
                     <li>(0354) 123456</li>
                     <li>kontak@kedirikota.go.id</li>
-                    <li>Jl.Basuki Rahmat No.15, Kediri</li>
+                    <li>Jl. Basuki Rahmat No.15, Kediri</li>
                 </ul>
             </div>
             <!-- Kolom 4: Learn More -->
@@ -106,10 +117,10 @@
                 <h3>Social Media</h3>
                 <div class="footer-social-links">
                     <!-- Placeholder untuk ikon, menggunakan inisial -->
-                    <a href="#" class="fab fa-facebook-f" aria-label="Facebook"></a>
-                    <a href="#" class="fab fa-twitter" aria-label="Twitter"></a>
-                    <a href="#" class="fab fa-instagram" aria-label="Instagram"></a>
-                    <a href="#" class="fab fa-youtube" aria-label="YouTube"></a>
+                    <a href="#" class="icon-fb" aria-label="Facebook"></a>
+                    <a href="#" class="icon-tw" aria-label="Twitter"></a>
+                    <a href="#" class="icon-ig" aria-label="Instagram"></a>
+                    <a href="#" class="icon-yt" aria-label="YouTube"></a>
                 </div>
             </div>
         </div>
@@ -117,6 +128,16 @@
             &copy; 2025 Pemerintah Kota Kediri. All rights reserved.
         </div>
     </footer>
+    <!-- ==== END FOOTER ==== -->
+
+    <!-- ==== Video Modal (BARU) ==== -->
+    <div id="videoModal" class="video-modal">
+        <div class="video-modal-content">
+            <span class="material-symbols-outlined video-modal-close">close</span>
+            <iframe id="modalVideoFrame" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+    </div>
+    <!-- ==== END Video Modal ==== -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
 </body>

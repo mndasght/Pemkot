@@ -1,19 +1,19 @@
 @extends('layouts.app')
 @section('content')
     <!-- Hero Section -->
-    <section class="hero"
-        style="background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url('{{ asset('image/heronew.png')}}');">
+    <section class="hero" id="hero-section"
+        style="background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url('{{ asset('image/heronew.png') }}');">
         <div class="hero-content">
             <h1>Selamat Datang di <span>Kota Kediri</span></h1>
             <p>Jelajahi Pesona Sejarah, Budaya, dan Wisata</p>
-            <div class="search-box">
+            <div class="search-box" id="heroSearchBox">
                 <span class="material-symbols-outlined">search</span>
-                <input type="text" placeholder="Cari destinasi, tempat makan, atau budaya...">
-                <button type="submit">Cari</button>
+                <input type="text" id="searchInput" placeholder="Cari destinasi, tempat makan, atau budaya...">
+                <button type="button" id="searchButton">Cari</button>
             </div>
             <div class="hero-cta-group">
-                <a href="#" class="cta-btn">Jelajahi Kota</a>
-                <a href="#" class="cta-btn">Cek Layanan</a>
+                <a href="#" class="cta-btn" id="btn-jelajahi-kota" data-video-id="dQw4w9WgXcQ">Jelajahi Kota</a>
+                <a href="#" class="cta-btn" id="btn-cek-layanan" data-video-id="dQw4w9WgXcQ">Cek Layanan</a>
             </div>
         </div>
         <div class="hero-bottom-bar" id="scrollToStory">
@@ -22,8 +22,19 @@
     </section>
 
 
-    <!-- Konten utama halaman (sheet putih) -->
+    <!-- Konten utama halaman -->
     <main class="page-content">
+
+        <!-- PENGUMUMAN TIDAK ADA HASIL -->
+        <div id="noResultsMessage" class="hidden-section"
+            style="padding: 100px 5%; text-align: center; margin: 0 auto; max-width: 800px;">
+            <span class="material-symbols-outlined"
+                style="font-size: 5rem; color: var(--accent-color); margin-bottom: 15px;">sentiment_dissatisfied</span>
+            <h3 style="color: var(--dark-color); font-family: 'Poppins', sans-serif; font-size: 1.8rem;">Maaf, tidak ada
+                konten yang cocok.</h3>
+            <p style="color: var(--gray); font-size: 1.1rem; margin-top: 10px;">Coba gunakan kata kunci lain (misalnya:
+                'kuliner', 'universitas', 'sejarah') atau hapus pencarian Anda.</p>
+        </div>
 
         <section class="section-story" id="story-section">
             <div class="story-container"
@@ -47,17 +58,19 @@
                         <span class="material-symbols-outlined">chevron_left</span>
                     </button>
                     <div id="card-slider" class="card-slider">
-                        <div class="card-item" data-background="https://kediripedia.com/wp-content/uploads/2024/03/COLLECTIE_TROPENMUSEUM_Verhoogde_Brantasbrug_te_Kediri_Oost-Java_TMnr_10007564-1.jpg">
-                            <img src="https://kediripedia.com/wp-content/uploads/2024/03/COLLECTIE_TROPENMUSEUM_Verhoogde_Brantasbrug_te_Kediri_Oost-Java_TMnr_10007564-1.jpg" alt="Candi Penataran">
+                        <div class="card-item"
+                            data-background="https://kediripedia.com/wp-content/uploads/2024/03/COLLECTIE_TROPENMUSEUM_Verhoogde_Brantasbrug_te_Kediri_Oost-Java_TMnr_10007564-1.jpg">
+                            <img src="https://kediripedia.com/wp-content/uploads/2024/03/COLLECTIE_TROPENMUSEUM_Verhoogde_Brantasbrug_te_Kediri_Oost-Java_TMnr_10007564-1.jpg"
+                                alt="Candi Penataran">
                         </div>
                         <div class="card-item" data-background="{{ asset('image/goa.webp') }}">
                             <img src="{{ asset('image/goa.webp') }}" alt="Gua Selomangleng">
                         </div>
-                        <div class="card-item" data-background="https://lh3.googleusercontent.com/gps-cs-s/AG0ilSztJpAIRZgDfPXNn0ZcDfhqWQeC1_F4Lmal_f1W-_N1Sy4i9yppuOlxyJWPLyYC9GtPdGGFgXRnBE17a4-6AlCMKS1eWdxG4lJJ0bLqvJgSvxADP_iKz7Y7RtSVGzxGeqM76ihyMA=s1360-w1360-h1020-rw">
-                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AG0ilSztJpAIRZgDfPXNn0ZcDfhqWQeC1_F4Lmal_f1W-_N1Sy4i9yppuOlxyJWPLyYC9GtPdGGFgXRnBE17a4-6AlCMKS1eWdxG4lJJ0bLqvJgSvxADP_iKz7Y7RtSVGzxGeqM76ihyMA=s1360-w1360-h1020-rw" alt="Museum Airlangga">
+                        <div class="card-item" data-background="{{ asset('image/museum.webp') }}">
+                            <img src="{{ asset('image/museum.webp') }}" alt="Museum Airlangga">
                         </div>
-                        <div class="card-item" data-background="https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwkVcQR5hg6CjftEDSU7ObdEo9FENMetZmh40AM6WbBqXbeLoCQ6mSjnm7kU5Mk5PKLrZsCYvNTZ0IOx8rpTMM0wKrMdnZ5mTbOqZavSM-yQbruGBSADQdx5rllV3dsel8sMT2Hog=s1360-w1360-h1020-rw">
-                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwkVcQR5hg6CjftEDSU7ObdEo9FENMetZmh40AM6WbBqXbeLoCQ6mSjnm7kU5Mk5PKLrZsCYvNTZ0IOx8rpTMM0wKrMdnZ5mTbOqZavSM-yQbruGBSADQdx5rllV3dsel8sMT2Hog=s1360-w1360-h1020-rw" alt="Simpang Lima Gumul">
+                        <div class="card-item" data-background="{{ asset('image/gunungklotok.png') }}">
+                            <img src="{{ asset('image/gunungklotok.png') }}" alt="Gunung Klotok">
                         </div>
                     </div>
                     <button class="slider-arrow" id="next-slide" aria-label="Slide berikutnya">
@@ -67,8 +80,8 @@
             </div>
         </section>
 
-        <!-- ==== Section Nearby Places (BARU) ==== -->
-        <section class="section-nearby-places">
+        <!-- ==== Section Nearby Places ==== -->
+        <section class="section-nearby-places" id="nearby-section">
             <div class="nearby-places-container">
                 <div class="nearby-places-header animate-on-scroll animate-slide-up">
                     <h2>Cari tempat di sekitarmu</h2>
@@ -84,7 +97,7 @@
                 </div>
                 <!-- ==== Peta Interaktif ==== -->
                 <div class="nearby-places-map animate-on-scroll animate-slide-up">
-                    <iframe
+                    <iframe id="nearby-map-iframe"
                         src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d63261.94228965021!2d111.97905342167968!3d-7.82823379999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1swisata%20kuliner%20di%20Kediri!5e0!3m2!1sen!2sid!4v1731295000000!5m2!1sen!2sid"
                         width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -92,11 +105,11 @@
             </div>
         </section>
 
-        <section class="section-popular-tours">
+        <section class="section-popular-tours" id="tours-section">
             <div class="popular-tours-container">
                 <div class="popular-tours-header animate-on-scroll animate-slide-up">
                     <h2>Tempat Wisata yang Populer</h2>
-                    <a href="{{ url('/wisata') }}" class="btn-more">Selengkapnya</a>
+                    <a href="#" class="btn-more">Selengkapnya</a>
                 </div>
                 <div class="popular-tours-slider-wrapper animate-on-scroll animate-stagger">
                     <button class="slider-arrow" id="prev-tour-slide" aria-label="Slide sebelumnya">
@@ -110,15 +123,13 @@
                             </div>
                         </div>
                         <div class="tour-card">
-                            <img src="{{ asset('image/goa.webp') }}"
-                                alt="Goa Selomangkleng">
+                            <img src="{{ asset('image/goa.webp') }}" alt="Goa Selomangkleng">
                             <div class="tour-card-title">
                                 <h3>Goa Selomangkleng, Mojoroto</h3>
                             </div>
                         </div>
                         <div class="tour-card">
-                            <img src="{{ asset('image/taman_sekartaji.webp') }}"
-                                alt="Taman Sekartaji">
+                            <img src="{{ asset('image/taman_sekartaji.webp') }}" alt="Taman Sekartaji">
                             <div class="tour-card-title">
                                 <h3>Taman Sekartaji, Mojoroto
                                 </h3>
@@ -131,8 +142,7 @@
                             </div>
                         </div>
                         <div class="tour-card">
-                            <img src="{{ asset('image/museum.webp') }}"
-                                alt="Museum Airlangga">
+                            <img src="{{ asset('image/museum.webp') }}" alt="Museum Airlangga">
                             <div class="tour-card-title">
                                 <h3>Museum Airlangga, Mojoroto</h3>
                             </div>
@@ -145,9 +155,7 @@
             </div>
         </section>
 
-
-
-        <section class="section-culinary">
+        <section class="section-culinary" id="culinary-section">
             <div class="culinary-container">
                 <div class="culinary-header animate-on-scroll animate-slide-up">
                     <h2>Yuk Kulineran Bareng Influencer Kediri</h2>
@@ -262,7 +270,7 @@
                                     </div>
                                     <div class="card-info-row">
                                         <span class="label">Jam Buka</span>
-                                        <span class="value">10:00 - 18:00</span>
+                                        <span class="value">10:00 - 18:01</span>
                                     </div>
                                     <span class="menu-list-label">Daftar Menu:</span>
                                     <ul class="menu-list">
@@ -283,7 +291,7 @@
             </div>
         </section>
 
-        <section class="section-education">
+        <section class="section-education" id="education-section">
             <div class="education-container">
                 <div class="education-header animate-on-scroll animate-slide-up">
                     <h2>Kediri, Kota Pelajar</h2>
@@ -292,7 +300,6 @@
                         ilmu, kreativitas, maupun karakter.</p>
                 </div>
                 <div class="education-filters animate-on-scroll animate-slide-up">
-                    <!-- Mengubah data-filter menjadi kategori spesifik -->
                     <button class="filter-btn active" data-filter="univ">Universitas</button>
                     <button class="filter-btn" data-filter="sd">Sekolah Dasar</button>
                     <button class="filter-btn" data-filter="pesantren">Pondok Pesantren</button>
@@ -333,8 +340,8 @@
                             <div class="education-card-info">
                                 <span class="type">Universitas</span>
                                 <h3>Universitas Islam Kadiri</h3>
-                                <p class="description">Universitas Islam Kadiri adalah universitas swasta tertua di Kediri
-                                    yang terus berinovasi.</p>
+                                <p class="description">Universitas Islam Kadiri adalah universitas swasta tertua di
+                                    Kediri yang terus berinovasi.</p>
                             </div>
                         </div>
                         <div class="education-card" data-category="univ">
@@ -350,7 +357,7 @@
                             </div>
                         </div>
 
-                        <!-- Kategori: Sekolah Dasar (SD) - BARU -->
+                        <!-- Kategori: Sekolah Dasar (SD) -->
                         <div class="education-card hidden-card" data-category="sd">
                             <div class="education-card-image-wrapper">
                                 <img src="https://placehold.co/400x500/FFD700/333333?text=SDN+Banjaran+4"
@@ -388,7 +395,7 @@
                             </div>
                         </div>
 
-                        <!-- Kategori: Pondok Pesantren - BARU -->
+                        <!-- Kategori: Pondok Pesantren -->
                         <div class="education-card hidden-card" data-category="pesantren">
                             <div class="education-card-image-wrapper">
                                 <img src="https://placehold.co/400x500/121212/FFFFFF?text=Ponpes+Lirboyo"
@@ -397,8 +404,8 @@
                             <div class="education-card-info">
                                 <span class="type">Pondok Pesantren</span>
                                 <h3>Ponpes Lirboyo</h3>
-                                <p class="description">Salah satu pesantren terbesar dan tertua di Indonesia, menjadi pusat
-                                    studi Islam klasik.</p>
+                                <p class="description">Salah satu pesantren terbesar dan tertua di Indonesia, menjadi
+                                    pusat studi Islam klasik.</p>
                             </div>
                         </div>
                         <div class="education-card hidden-card" data-category="pesantren">
@@ -426,7 +433,7 @@
                             </div>
                         </div>
 
-                        <!-- Kategori: Lainnya (SMA/SMK/Perpus) - BARU -->
+                        <!-- Kategori: Lainnya (SMA/SMK/Perpus) -->
                         <div class="education-card hidden-card" data-category="lainnya">
                             <div class="education-card-image-wrapper">
                                 <img src="https://placehold.co/400x500/FFD700/333333?text=SMAN+1+Kediri"
@@ -447,8 +454,8 @@
                             <div class="education-card-info">
                                 <span class="type">Madrasah Aliyah</span>
                                 <h3>MAN 2 Kota Kediri</h3>
-                                <p class="description">Madrasah unggulan dengan berbagai program keterampilan dan prestasi
-                                    nasional.</p>
+                                <p class="description">Madrasah unggulan dengan berbagai program keterampilan dan
+                                    prestasi nasional.</p>
                             </div>
                         </div>
                         <div class="education-card hidden-card" data-category="lainnya">
@@ -459,8 +466,8 @@
                             <div class="education-card-info">
                                 <span class="type">Fasilitas Publik</span>
                                 <h3>Perpustakaan Kota Kediri</h3>
-                                <p class="description">Pusat literasi warga dengan koleksi buku lengkap dan ruang baca yang
-                                    nyaman.</p>
+                                <p class="description">Pusat literasi warga dengan koleksi buku lengkap dan ruang baca
+                                    yang nyaman.</p>
                             </div>
                         </div>
 
@@ -470,7 +477,7 @@
         </section>
 
         <!-- ==== Section Agenda (Baru) ==== -->
-        <section class="section-agenda">
+        <section class="section-agenda" id="agenda-section">
             <div class="agenda-container"
                 style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://live.staticflickr.com/65535/54928693191_2360361fea.jpg');">
 
@@ -486,7 +493,7 @@
                     <p>
                         Nantikan Setiap Keseruan yang akan datang di Kota Kediri
                     </p>
-                    <!-- Card Preview Kiri (Target Perubahan) -->
+                    <!-- Card Preview Kiri -->
                     <div class="agenda-preview-card">
                         <img src="https://live.staticflickr.com/65535/54928861463_e4c182380f_z.jpg"
                             alt="Agenda Highlight">
@@ -502,7 +509,6 @@
                     </button>
 
                     <div class="agenda-list-scroller" id="agenda-list-scroller">
-                        <!-- Menambahkan data-image pada setiap item -->
                         <div class="agenda-list-item active"
                             data-image="https://live.staticflickr.com/65535/54928861463_e4c182380f_z.jpg">
                             <div class="agenda-date">
@@ -548,7 +554,6 @@
                                 <p>Temukan produk-produk unggulan dari UMKM lokal.</p>
                             </div>
                         </div>
-                        <!-- Tambahkan item agenda lagi di sini untuk menguji scroll -->
                         <div class="agenda-list-item"
                             data-image="https://live.staticflickr.com/65535/54928906504_2099c47f19_c.jpg">
                             <div class="agenda-date">
@@ -570,19 +575,21 @@
             </div>
         </section>
         <!-- ==== Section Gallery (Baru) ==== -->
-        <section class="section-gallery">
+        <section class="section-gallery" id="gallery-section">
             <div class="gallery-container">
                 <div class="gallery-header animate-on-scroll animate-slide-up">
                     <h2>Galeri Pariwisata & Blog Wisata</h2>
                 </div>
                 <div class="gallery-content">
                     <div class="gallery-blog-card animate-on-scroll animate-slide-in-left">
-                        <img src="https://placehold.co/1200x800/0D7DA3/FFFFFF?text=Blog+Image" alt="Blog Image">
+                        <img src="{{ asset('image/gunungklotok.png') }}" alt="Blog Image">
                         <div class="gallery-blog-info">
                             <div class="blog-date">10 NOVEMBER 2025</div>
-                            <h3>Selomangkleng : Goa Estetik, Feed Kece!</h3>
+                            <h3>Menjelajahi Keindahan Tersembunyi di Air Terjun Dolo</h3>
                             <p>
-                                Jadi gini gann ada yang tau goa selomangkleng? ya goa kan
+                                Temukan pesona Air Terjun Dolo yang menawan, surga tersembunyi di lereng Gunung Wilis
+                                yang
+                                menawarkan kesegaran dan pemandangan...
                             </p>
                             <a href="#" class="blog-read-more">
                                 Baca Selengkapnya <span class="arrow">➜</span>
@@ -592,18 +599,18 @@
 
                     <div class="gallery-video-card animate-on-scroll animate-slide-in-right">
                         <div class="video-responsive-wrapper">
-                            <iframe src="https://www.youtube.com/embed/Zj6euNbvb5I" title="YouTube video player"
-                                frameborder="0"
+                            <iframe id="gallery-youtube-video" src="https://www.youtube.com/embed/Zj6euNbvb5I"
+                                title="YouTube video player" frameborder="0"
                                 allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                 allowfullscreen>
                             </iframe>
                         </div>
                     </div>
                     <div class="gallery-full-card animate-on-scroll animate-slide-up"
-                        style="background-image: url('{{ asset('image/heronew.png') }}');">
+                        style="background-image: url('https://placehold.co/1200x800/1E90FF/FFFFFF?text=Simpang+Lima+Gumul+Malam');">
                         <div class="gallery-full-content">
-                            <h3>Tips Mendapatkan Cewek Cakep di Kota Kediri</h3>
-                            <p>Lihat bagaimana keindahan Kota Kediri ini bersinar di malam hari.</p>
+                            <h3>Video Terbaru: Pesona Malam Hari Kota Kediri</h3>
+                            <p>Lihat bagaimana ikon Kota Kediri ini bersinar di malam hari.</p>
                             <div class="gallery-full-tags">
                                 <a href="#" class="gallery-tag">Google</a>
                                 <a href="#" class="gallery-tag">Trending</a>

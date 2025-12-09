@@ -6,25 +6,22 @@
 
 html {
     scroll-behavior: smooth;
-    overflow-x: hidden; /* Pastikan html tidak scroll horizontal */
+    overflow-x: hidden;
 }
 
 body {
     width: 100%;
-    overflow-x: hidden; /* Pastikan body tidak scroll horizontal */
+    overflow-x: hidden;
     font-family: "Nunito", sans-serif;
     color: #333;
     background-color: #ffffff;
 }
 
-/* ==== Variables (Palet Warna Baru) ==== */
+/* ==== Variables ==== */
 :root {
     --primary-color: #0d7da3;
-    /* Biru tua dari footer */
     --secondary-color: #1e90ff;
-    /* Biru yang lebih cerah */
     --accent-color: #ffd700;
-    /* Aksen emas/kuning */
     --dark-color: #121212;
     --white-color: #ffffff;
     --light-gray: #f8f9fa;
@@ -33,7 +30,40 @@ body {
     --shadow-medium: rgba(0, 0, 0, 0.15);
     --transition-speed: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     --gallery-title-color: var(--primary-color);
-    /* Menyamakan dengan warna primer */
+}
+
+/* ==== Floating Search Button ==== */
+#floatingSearchButton {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 900;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.8);
+    transition: all var(--transition-speed);
+}
+
+#floatingSearchButton.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+#floatingSearchButton:hover {
+    background-color: var(--secondary-color);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 /* ==== Navbar ==== */
@@ -45,13 +75,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 5%; /* Kembali ke padding standar */
+    padding: 20px 5%;
     z-index: 100;
-
-    /* DIKEMBALIKAN: Menghapus gradient, kembali transparan murni */
     background-color: transparent;
-
-    /* Kembali ke transisi standar yang lebih cepat */
     transition: background-color var(--transition-speed),
         padding var(--transition-speed), box-shadow var(--transition-speed),
         border-radius var(--transition-speed);
@@ -77,13 +103,11 @@ body {
     font-size: 1rem;
     font-weight: 600;
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    /* DIUBAH: Menghapus transform dari transition agar font tidak bergerak */
     transition: color var(--transition-speed);
 }
 
 .nav-links a:hover {
     color: var(--accent-color);
-    /* DIUBAH: Menghapus transform: scale(1.05); agar ukuran font tetap sama */
 }
 
 .navbar.scrolled .nav-links a:hover,
@@ -131,7 +155,6 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.2);
-    /* Sedikit overlay gelap agar teks lebih terbaca */
     z-index: 0;
 }
 
@@ -155,7 +178,7 @@ body {
 }
 
 .hero-content h1 span {
-    color: #00bfff;
+    color: var(--accent-color);
 }
 
 .hero-content p {
@@ -173,6 +196,7 @@ body {
     margin: 0 auto 20px auto;
     display: flex;
     align-items: center;
+    scroll-margin-top: 100px;
 }
 
 .search-box input {
@@ -260,6 +284,7 @@ body {
     border-bottom-right-radius: 25px;
     transition: all var(--transition-speed);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 
 .cta-btn:hover {
@@ -331,6 +356,10 @@ body {
     padding-top: 0;
 }
 
+.hidden-section {
+    display: none !important;
+}
+
 /* ==== Section Containers ==== */
 .section-story,
 .section-nearby-places,
@@ -340,10 +369,9 @@ body {
 .section-agenda,
 .section-gallery {
     position: relative;
-    overflow: hidden; /* Mengamankan overflow dari child elements */
+    overflow: hidden;
 }
 
-/* Mengatur z-index berurutan */
 .section-story {
     z-index: 6;
 }
@@ -372,7 +400,6 @@ body {
     z-index: 0;
 }
 
-/* Containers inside sections need z-index to appear above blobs */
 .story-container,
 .nearby-places-container,
 .popular-tours-container,
@@ -441,7 +468,6 @@ body {
 
 .story-container .cta-button:hover {
     background-color: #ffec80;
-    /* Lighter gold */
     box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
     color: var(--dark-color);
 }
@@ -565,13 +591,15 @@ body {
     cursor: pointer;
     transition: transform var(--transition-speed),
         box-shadow var(--transition-speed);
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .card-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform var(--transition-speed);
+    display: block;
+    pointer-events: none;
 }
 
 .card-item:hover {
@@ -582,10 +610,9 @@ body {
 .card-item.active {
     transform: scale(1.08) translateY(-10px);
     box-shadow: 0 12px 30px rgba(255, 215, 0, 0.3);
-    /* Aksen aktif */
 }
 
-/* ==== Section Nearby Places (Baru) ==== */
+/* ==== Section Nearby Places ==== */
 .section-nearby-places {
     padding: 100px 5%;
     background-color: var(--white-color);
@@ -623,7 +650,6 @@ body {
     flex-wrap: wrap;
 }
 
-/* Menggunakan style .filter-btn yang sudah ada */
 .filter-btn {
     background-color: var(--light-gray);
     color: var(--gray);
@@ -651,13 +677,11 @@ body {
 
 .nearby-places-map {
     width: 100%;
-    height: 450px;
+    aspect-ratio: 16 / 9;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 30px var(--shadow-medium);
-    aspect-ratio: 16 / 9;
     background-color: #e0e0e0;
-    /* Latar belakang jika peta gagal dimuat */
 }
 
 .nearby-places-map iframe {
@@ -945,7 +969,7 @@ body {
 .rating {
     font-size: 0.9rem;
     font-weight: 600;
-    color: #000000;
+    color: #f39c12;
     display: flex;
     align-items: center;
     flex-shrink: 0;
@@ -1067,7 +1091,6 @@ body {
     display: flex;
     gap: 20px;
     overflow-x: auto;
-    /* Diubah dari visible agar bisa discroll */
     scroll-behavior: smooth;
     padding-bottom: 20px;
     padding-right: 70px;
@@ -1078,7 +1101,6 @@ body {
     display: none;
 }
 
-/* Class helper untuk menyembunyikan kartu saat difilter */
 .education-card.hidden-card {
     display: none;
 }
@@ -1157,7 +1179,6 @@ body {
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--accent-color);
-    /* Diubah ke aksen */
     text-transform: uppercase;
     margin-bottom: 5px;
 }
@@ -1241,7 +1262,6 @@ body {
 .agenda-title-arrow {
     font-size: clamp(3rem, 8vw, 5rem);
     color: var(--accent-color);
-    /* Diubah ke aksen */
     opacity: 0.8;
 }
 
@@ -1281,7 +1301,7 @@ body {
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: opacity 0.3s ease, transform var(--transition-speed); /* Ditambahkan transisi opacity */
+    transition: opacity 0.3s ease, transform var(--transition-speed);
 }
 
 .agenda-preview-card-info {
@@ -1291,7 +1311,7 @@ body {
     width: 100%;
     padding: 15px;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 20%, transparent);
-    z-index: 2; /* Ensure info is above image */
+    z-index: 2;
 }
 
 .agenda-preview-card-info h4 {
@@ -1300,7 +1320,6 @@ body {
     font-weight: 600;
     color: var(--white-color);
     margin: 0;
-    /* Menambahkan transisi untuk efek halus pada teks */
     transition: opacity 0.3s ease, transform 0.3s ease;
     opacity: 1;
     transform: translateY(0);
@@ -1355,7 +1374,6 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Style untuk item agenda yang sedang dipilih (Active State) */
 .agenda-list-item.active {
     background: rgba(255, 255, 255, 0.3);
     border: 1px solid var(--accent-color);
@@ -1369,7 +1387,6 @@ body {
     background: var(--white-color);
     border-radius: 10px;
     color: var(--primary-color);
-    /* Diubah ke primer */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1455,7 +1472,6 @@ body {
     gap: 30px;
     align-items: stretch;
     flex-wrap: wrap;
-    /* Membungkus jika perlu */
 }
 
 .gallery-blog-card {
@@ -1481,9 +1497,7 @@ body {
 .gallery-blog-card img {
     width: 100%;
     height: auto;
-    /* Dihapus: height: 220px; */
     aspect-ratio: 16 / 9;
-    /* Ditambahkan: Responsive aspect ratio */
     object-fit: cover;
     display: block;
     flex-shrink: 0;
@@ -1579,7 +1593,6 @@ body {
 .gallery-full-card {
     width: 100%;
     margin-top: 30px;
-    /* Jarak dari baris atas */
     height: 250px;
     border-radius: 15px;
     overflow: hidden;
@@ -1752,9 +1765,7 @@ body {
 @media (min-width: 769px) {
     .navbar.scrolled,
     .navbar:hover {
-        background-color: var(
-            --white-color
-        ); /* Kembali menggunakan background-color */
+        background-color: var(--white-color);
         padding-top: 15px;
         padding-bottom: 15px;
         border-bottom-left-radius: 20px;
@@ -1798,7 +1809,6 @@ body {
     .slider-wrapper {
         width: 100%;
         max-width: 100%;
-        /* Ditambahkan */
     }
 
     .card-slider {
@@ -1834,8 +1844,7 @@ body {
     }
 
     .culinary-card img {
-        height: 150px;
-        padding: 10px;
+        height: 120px;
         margin: 10px;
     }
 
@@ -1857,7 +1866,6 @@ body {
         width: 100%;
         max-width: 450px;
         flex: 1;
-        /* Reset flex */
         min-width: unset;
     }
 
@@ -1865,7 +1873,6 @@ body {
         width: 100%;
         max-width: 450px;
         flex: 1;
-        /* Reset flex */
         min-width: unset;
     }
 
@@ -1882,14 +1889,13 @@ body {
         flex-direction: column;
         padding: 20px;
         gap: 20px;
-        background-color: transparent; /* Hapus background putih di tablet */
-        backdrop-filter: none; /* Hapus blur di tablet */
-        box-shadow: none; /* Hapus shadow di tablet */
+        background-color: transparent;
+        backdrop-filter: none;
+        box-shadow: none;
     }
 
     .lapor-image {
         flex-basis: 250px;
-        /* Lebih kecil di tablet */
         height: 250px;
         width: 100%;
         max-width: 400px;
@@ -1961,10 +1967,6 @@ body {
     }
 
     .navbar.scrolled.nav-open .hamburger .line {
-        background-color: var(--white-color);
-    }
-
-    .hamburger.active .line {
         background-color: var(--white-color);
     }
 
@@ -2042,7 +2044,7 @@ body {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
-        overflow-x: visible; /* No horizontal scroll */
+        overflow-x: visible;
         padding-right: 0;
         padding-bottom: 0;
     }
@@ -2054,7 +2056,7 @@ body {
     }
 
     .tour-card img {
-        height: 180px; /* Smaller height for mobile */
+        height: 180px;
     }
 
     /* 2. Culinary Grid Mobile */
@@ -2072,14 +2074,13 @@ body {
         flex: none;
         width: 100%;
         max-width: none;
-        height: auto; /* Auto height based on content */
+        height: auto;
         min-height: 280px;
     }
 
     .culinary-card img {
         height: 120px;
         margin: 10px;
-        width: calc(100% - 20px);
     }
 
     .culinary-card-info {
@@ -2111,11 +2112,11 @@ body {
         flex: none;
         width: 100%;
         max-width: none;
-        height: 280px; /* Smaller fixed height */
+        height: 280px;
     }
 
     .education-card:hover {
-        height: 280px; /* Disable height expand on mobile hover */
+        height: 280px;
         flex-basis: auto;
     }
 
@@ -2205,7 +2206,7 @@ body {
     }
 }
 
-/* ==== Section Lapor (Pre-Footer) - BARU & DIUBAH ==== */
+/* ==== Section Lapor (Pre-Footer) ==== */
 .pre-footer-image {
     width: 100%;
     height: auto;
@@ -2220,22 +2221,21 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Tambahkan overlay gelap agar teks putih lebih kontras */
     background-blend-mode: multiply;
     background-color: rgba(0, 0, 0, 0.3);
 }
 
 .lapor-content-wrapper {
-    max-width: 1200px; /* DIUBAH: Dilebarkan */
+    max-width: 1200px;
     width: 100%;
     display: flex;
     align-items: center;
     gap: 40px;
-    background-color: transparent; /* DIUBAH: Dihapus */
-    backdrop-filter: none; /* DIUBAH: Dihapus */
+    background-color: transparent;
+    backdrop-filter: none;
     border-radius: 20px;
     padding: 30px;
-    box-shadow: none; /* DIUBAH: Dihapus */
+    box-shadow: none;
     z-index: 5;
 }
 
@@ -2244,7 +2244,7 @@ body {
     height: 300px;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     background-color: transparent;
 }
 
@@ -2252,30 +2252,29 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.3));
 }
 
 .lapor-details {
     flex: 1;
-    color: var(--white-color); /* DIUBAH */
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /* DIUBAH */
+    color: var(--white-color);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .lapor-details h2 {
     font-family: "Poppins", sans-serif;
     font-size: clamp(1.5rem, 4vw, 2rem);
-    color: var(--white-color); /* DIUBAH */
+    color: var(--white-color);
     margin-bottom: 10px;
 }
 
 .lapor-details p {
     font-size: 0.95rem;
-    color: var(--light-gray); /* DIUBAH */
+    color: var(--light-gray);
     line-height: 1.7;
     margin-bottom: 25px;
 }
 
-/* Search box baru untuk Lapor (Style disamakan dengan Hero) */
+/* Search box baru untuk Lapor */
 .lapor-search-box {
     position: relative;
     max-width: 100%;
@@ -2288,33 +2287,33 @@ body {
 .lapor-search-box input {
     width: 100%;
     padding: 12px 140px 12px 45px;
-    border: none; /* DIUBAH */
+    border: none;
     border-radius: 50px;
     outline: none;
     font-size: 0.9rem;
     font-family: "Nunito", sans-serif;
-    color: var(--white-color); /* DIUBAH */
-    background: rgba(255, 255, 255, 0.15); /* DIUBAH */
-    backdrop-filter: blur(8px); /* DIUBAH */
-    border: 1px solid rgba(255, 255, 255, 0.25); /* DIUBAH */
+    color: var(--white-color);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     transition: all var(--transition-speed);
 }
 
 .lapor-search-box input::placeholder {
-    color: rgba(255, 255, 255, 0.7); /* DIUBAH */
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .lapor-search-box input:focus {
-    background: rgba(255, 255, 255, 0.2); /* DIUBAH */
-    border: 1px solid var(--accent-color); /* DIUBAH */
-    box-shadow: none; /* DIUBAH */
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--accent-color);
+    box-shadow: none;
 }
 
 .lapor-search-box .material-symbols-outlined {
     position: absolute;
     left: 18px;
     font-size: 22px;
-    color: rgba(255, 255, 255, 0.8); /* DIUBAH */
+    color: rgba(255, 255, 255, 0.8);
     pointer-events: none;
     z-index: 2;
 }
@@ -2327,8 +2326,8 @@ body {
     padding: 8px 24px;
     border: none;
     border-radius: 25px;
-    background-color: var(--accent-color); /* DIUBAH */
-    color: var(--dark-color); /* DIUBAH */
+    background-color: var(--accent-color);
+    color: var(--dark-color);
     font-weight: 600;
     font-family: "Nunito", sans-serif;
     cursor: pointer;
@@ -2336,14 +2335,11 @@ body {
 }
 
 .lapor-search-box button:hover {
-    background-color: #ffec80; /* DIUBAH */
+    background-color: #ffec80;
     transform: translateY(-50%) scale(1.05);
 }
 
-/* ==== FOOTER BARU ==== */
-
-/* Bagian Gambar Pre-Footer */
-/* .pre-footer-image styling ada di atas, di section Lapor */
+/* ==== FOOTER ==== */
 
 /* Footer Utama */
 .site-footer {
@@ -2409,14 +2405,12 @@ body {
 .footer-links a:hover {
     color: var(--white-color);
     padding-left: 5px;
-    /* Efek hover */
 }
 
 /* Kolom Social Media */
 .footer-social-links {
     display: flex;
     gap: 10px;
-    /* Jarak antar ikon */
     flex-wrap: wrap;
 }
 
@@ -2437,11 +2431,9 @@ body {
 .footer-social-links a:hover {
     background-color: var(--white-color);
     color: #0d7da3;
-    /* Warna biru footer */
     transform: scale(1.1);
 }
 
-/* Ikon (menggunakan inisial sebagai placeholder) */
 .footer-social-links .icon-fb::before {
     content: "f";
     font-weight: bold;
@@ -2488,35 +2480,381 @@ body {
 }
 
 @media (max-width: 768px) {
-    /* .pre-footer-image styling ada di atas, di media query 768px */
-
-    .site-footer {
-        margin-top: -50px;
-        padding-top: 70px;
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
-    }
-
-    .pre-footer-image {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
-
-    .footer-container {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-
-    .footer-column .footer-logo {
-        margin: 0 auto 10px auto;
-    }
-
-    .footer-links {
-        padding: 0;
-    }
-
-    .footer-social-links {
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
+        padding: 20px;
+        transition: right var(--transition-speed);
+    }
+
+    .hero {
+        height: 80vh;
+    }
+
+    .hero-content {
+        padding-top: 60px;
+    }
+
+    .hero-cta-group {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        right: auto;
+        width: 100%;
+        padding: 0 10%;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .hero-bottom-bar {
+        display: none;
+    }
+
+    .cta-btn {
+        width: 80%;
+        max-width: 300px;
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .navbar.scrolled .hamburger .line,
+    .hamburger .line {
+        background-color: var(--white-color);
+    }
+
+    .navbar.scrolled.nav-open .hamburger .line {
+        background-color: var(--white-color);
+    }
+
+    .hamburger.active .line:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active .line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .line:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .story-content h3,
+    .agenda-content h3 {
+        font-size: 1.1rem;
+    }
+
+    .story-content p,
+    .agenda-content p {
+        font-size: 0.9rem;
+    }
+
+    .cta-button {
+        font-size: 0.85rem;
+        padding: 10px 25px;
+    }
+
+    .popular-tours-header,
+    .culinary-header,
+    .education-header,
+    .nearby-places-header,
+    .gallery-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .gallery-header h2 {
+        width: 100%;
+    }
+
+    .education-header p,
+    .nearby-places-header p {
+        margin: 10px 0 0 0;
+    }
+
+    .education-filters,
+    .nearby-places-filters {
+        justify-content: flex-start;
+    }
+
+    .filter-btn {
+        padding: 8px 20px;
+        font-size: 0.85rem;
+    }
+
+    .popular-tours-slider-wrapper .slider-arrow,
+    .culinary-slider-wrapper .slider-arrow,
+    .education-slider-wrapper .slider-arrow {
+        display: none;
+    }
+
+    /* ---- GRID MOBILE MODIFICATIONS ---- */
+
+    /* 1. Popular Tours Grid Mobile */
+    .popular-tours-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        overflow-x: visible;
+        padding-right: 0;
+        padding-bottom: 0;
+    }
+
+    .tour-card {
+        flex-basis: auto;
+        max-width: none;
+        width: 100%;
+    }
+
+    .tour-card img {
+        height: 180px;
+    }
+
+    /* 2. Culinary Grid Mobile */
+    .culinary-slider {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        overflow-x: visible;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .culinary-card {
+        flex: none;
+        width: 100%;
+        max-width: none;
+        height: auto;
+        min-height: 280px;
+    }
+
+    .culinary-card img {
+        height: 120px;
+        margin: 10px;
+    }
+
+    .culinary-card-info {
+        padding: 10px;
+    }
+
+    .culinary-card-info h4 {
+        font-size: 0.9rem;
+    }
+
+    .rating {
+        font-size: 0.8rem;
+    }
+
+    .menu-list li {
+        font-size: 0.8rem;
+    }
+
+    /* 3. Education Grid Mobile */
+    .education-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        overflow-x: visible;
+        padding-right: 0;
+    }
+
+    .education-card {
+        flex: none;
+        width: 100%;
+        max-width: none;
+        height: 280px;
+    }
+
+    .education-card:hover {
+        height: 280px;
+        flex-basis: auto;
+    }
+
+    .education-card h3 {
+        font-size: 1rem;
+    }
+
+    /* General Adjustments */
+    .search-box {
+        width: 90%;
+    }
+
+    .search-box input {
+        padding: 15px 110px 15px 45px;
+        font-size: 0.9rem;
+    }
+
+    .search-box button {
+        padding: 11px 20px;
+    }
+
+    .gallery-content {
+        max-width: 100%;
+    }
+
+    .gallery-blog-card {
+        max-width: 100%;
+        min-width: unset;
+    }
+
+    .gallery-video-card {
+        max-width: 100%;
+        min-width: unset;
+    }
+
+    .gallery-full-card {
+        padding: 20px;
+    }
+
+    .gallery-full-content h3 {
+        font-size: 1.2rem;
+    }
+
+    .gallery-full-content p {
+        font-size: 0.9rem;
+        max-width: 100%;
+    }
+
+    .gallery-full-tags {
+        flex-wrap: wrap;
+    }
+
+    .gallery-tag {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+    }
+
+    @media (max-width: 992px) and (orientation: landscape) {
+        .hero {
+            height: 100vh;
+        }
+
+        .hero-cta-group {
+            position: relative;
+            bottom: auto;
+            left: auto;
+            right: auto;
+            width: 100%;
+            flex-direction: row;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .cta-btn {
+            width: auto;
+            max-width: 300px;
+        }
+
+        .hero-bottom-bar {
+            display: flex;
+            padding: 10px 5%;
+        }
+
+        .hero-content {
+            transform: scale(0.8);
+        }
+    }
+}
+
+/* ==== Video Modal Styles ==== */
+.video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.video-modal.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.video-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.video-modal.open .video-modal-content {
+    transform: scale(1);
+}
+
+.video-modal-content iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.video-modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0px;
+    background: var(--white-color);
+    color: var(--dark-color);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.5rem;
+    z-index: 1001;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.video-modal-close:hover {
+    background-color: var(--accent-color);
+    color: var(--dark-color);
+}
+
+@media (max-width: 600px) {
+    .video-modal-content {
+        width: 95%;
+    }
+    .video-modal-close {
+        top: 5px;
+        right: 5px;
+        background: rgba(255, 255, 255, 0.8);
     }
 }
 

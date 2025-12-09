@@ -1,17 +1,17 @@
 @extends('layouts.app')
 @section('content')
     <section class="gallery-hero" id="heroSection"
-        style="background-image: url('https://placehold.co/1920x1080/0D7DA3/white?text=Gunung+Kelud+View');">
+        style="background-image: url('https://placehold.co/1920x1080/0D7DA3/white?text=Gunung+Klotok+View');">
         <video class="hero-bg-video" id="heroBgVideo" loop muted playsinline>
             <source src="" type="video/mp4">
         </video>
         <div class="hero-cards-container">
             <div class="hero-card active" data-type="image"
-                data-src="https://placehold.co/1920x1080/0D7DA3/white?text=Gunung+Kelud+View"><img
-                    src="https://placehold.co/300x200/0D7DA3/white?text=Kawah" alt="Kawah"></div>
+                data-src="https://placehold.co/1920x1080/0D7DA3/white?text=Gunung+Klotok+View"><img
+                    src="https://placehold.co/300x200/0D7DA3/white?text=Gunung Klotok" alt="Kawah"></div>
             <div class="hero-card" data-type="image"
-                data-src="https://placehold.co/1920x1080/1E90FF/white?text=Simpang+Lima+Night"><img
-                    src="https://placehold.co/300x200/1E90FF/white?text=SLG+Malam" alt="SLG"></div>
+                data-src="https://placehold.co/1920x1080/1E90FF/white?text=Gunung+Klotok+View"><img
+                    src="https://placehold.co/300x200/1E90FF/white?text=Gunung Klotok" alt="SLG"></div>
             <div class="hero-card" data-type="video"
                 data-src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"><img
                     src="https://placehold.co/300x200/FFD700/333?text=Video+Taman" alt="Video">
