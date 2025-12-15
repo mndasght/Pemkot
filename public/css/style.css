@@ -209,7 +209,7 @@ body {
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
-/* ==== Search Box ==== */
+/* ==== Search Box & Suggestions ==== */
 .search-box {
     position: relative;
     max-width: 550px;
@@ -218,6 +218,7 @@ body {
     display: flex;
     align-items: center;
     scroll-margin-top: 100px;
+    z-index: 10; /* Pastikan di atas elemen lain agar dropdown terlihat */
 }
 
 .search-box input {
@@ -242,31 +243,116 @@ body {
 .search-box input:focus {
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid var(--accent-color);
+    border-radius: 25px 25px 0 0; /* Ubah radius bawah saat fokus jika ada sugesti */
 }
 
-.search-box .material-symbols-outlined.search-icon {
+/* Style untuk dropdown suggestion */
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--white-color);
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    max-height: 300px;
+    overflow-y: auto;
+    display: none; /* Hidden by default */
+    z-index: 1000;
+    margin-top: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.search-suggestions.show {
+    display: block;
+}
+
+.suggestion-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.2s;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #f5f9ff;
+    color: var(--primary-color);
+}
+
+.suggestion-item .match-type {
+    font-size: 0.75rem;
+    color: #888;
+    background: #eee;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+.search-box .search-icon {
     position: absolute;
     left: 18px;
     font-size: 22px;
     color: rgba(255, 255, 255, 0.8);
-    pointer-events: none;
+    pointer-events: none; /* Agar klik tembus ke input */
     z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.search-feedback {
+    /* Ganti warna di sini (contoh: var(--accent-color) untk kuning emas) */
+    color: var(--accent-color);
+
+    /* Opsi lain: warna putih */
+    /* color: #ffffff; */
+
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); /* Bayangan agar terbaca di background gambar */
+
+    /* Animasi fade in */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    height: 0;
+    overflow: hidden;
 }
 
-/* Tombol Clear (X) Baru */
-.search-box .clear-icon {
+.search-feedback.show {
+    opacity: 1;
+    height: auto;
+    overflow: visible;
+}
+
+/* 2. Khusus Icon Silang/Close (Kanan) */
+#searchClear {
     position: absolute;
-    right: 100px; /* Di sebelah kiri tombol Cari */
-    font-size: 20px;
-    color: rgba(255, 255, 255, 0.6);
-    cursor: pointer;
-    z-index: 3;
-    transition: color 0.3s;
-    display: none; /* Hidden by default */
+    right: 100px; /* Geser ke kiri sedikit agar tidak menumpuk dengan tombol Cari */
+    font-size: 22px;
+    color: var(--white-color);
+    cursor: pointer; /* Ubah kursor jadi tangan */
+    pointer-events: auto; /* PENTING: Mengaktifkan klik */
+    z-index: 20;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none; /* Default sembunyi, JS akan memunculkannya */
+    transition: all 0.2s ease;
 }
 
-.search-box .clear-icon:hover {
-    color: var(--white-color);
+#searchClear:hover {
+    color: var(--accent-color);
+    transform: translateY(-50%) scale(1.1);
 }
 
 .search-box button {
@@ -294,24 +380,6 @@ body {
 
 .search-box button:active {
     transform: translateY(-50%) scale(0.98);
-}
-
-/* Feedback Hasil Pencarian */
-.search-feedback {
-    position: absolute;
-    bottom: -30px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    color: var(--accent-color);
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-.search-feedback.show {
-    opacity: 1;
 }
 
 /* ==== Hero CTA Group ==== */
@@ -2293,7 +2361,9 @@ body {
     height: 300px;
     border-radius: 15px;
     overflow: hidden;
+    /* box-shadow dikurangi agar lebih halus di background transparan */
     box-shadow: none;
+    /* Mengubah background menjadi transparan */
     background-color: transparent;
 }
 
@@ -2301,6 +2371,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    /* Filter drop-shadow untuk membuat gambar tetap menonjol tanpa kotak putih */
     filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
 }
 
