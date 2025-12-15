@@ -47,39 +47,39 @@
     <!-- ==== FOOTER BARU ==== -->
 
     <!-- Bagian Gambar Pre-Footer (LAPOR) -->
-    <div class="pre-footer-image"
-        style="background-image: url('{{ asset('image/footer.webp') }}');">
-
+    <div class="pre-footer-image" style="
+        background-image: url('{{ asset('image/footer.webp') }}');
+      ">
         <!-- Konten Lapor (BARU) -->
         <div class="lapor-content-wrapper">
             <div class="lapor-image">
-                <img src="{{ asset('image/112.png') }}" alt="Lapor Mbak Wali">
+                <img src="{{ asset('image/112.png') }}" alt="Lapor Mbak Wali" />
             </div>
             <div class="lapor-details">
                 <h2>Lapor Mbak Wali 112</h2>
-                <p>Sampaikan aduan, kritik, dan saran Anda untuk membangun Kota Kediri menjadi lebih baik. Kami siap
-                    merespon dengan cepat.</p>
+                <p>
+                    Sampaikan aduan, kritik, dan saran Anda untuk membangun Kota Kediri
+                    menjadi lebih baik. Kami siap merespon dengan cepat.
+                </p>
                 <div class="lapor-search-box">
                     <span class="material-symbols-outlined">confirmation_number</span>
-                    <input type="text" placeholder="Cari nomor tiket aduan Anda...">
+                    <input type="text" placeholder="Cari nomor tiket aduan Anda..." />
                     <button type="submit">Cek Aduan</button>
                 </div>
             </div>
             <!-- GAMBAR KANAN BARU -->
             <div class="lapor-image">
-                <img src=""
-                    alt="Layanan Lapor Mbak Wali via QR Code">
+                <img src="" alt="Layanan Lapor Mbak Wali via QR Code" />
             </div>
         </div>
-
     </div>
     <!-- Footer Utama -->
     <footer class="site-footer">
         <div class="footer-container">
             <!-- Kolom 1: Logo & Semboyan -->
             <div class="footer-column">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Logo_Kota_Kediri_-_Seal_of_Kediri_City.svg" alt="Logo Pemkot Kediri"
-                    class="footer-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Logo_Kota_Kediri_-_Seal_of_Kediri_City.svg"
+                    alt="Logo Pemkot Kediri" class="footer-logo" />
                 <p>"Kediri Harmoni, Kota Berbudaya dan Melayani"</p>
             </div>
             <!-- Kolom 2: Navigation -->

@@ -8,12 +8,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Elemen pencarian baru
     const searchInput = document.getElementById("searchInput");
     const searchButton = document.getElementById("searchButton");
-    const clearSearchBtn = document.getElementById("clearSearch");
-    const searchFeedback = document.getElementById("searchFeedback");
     const allContentSections = document.querySelectorAll(
         ".page-content > section"
     );
     const noResultsMessage = document.getElementById("noResultsMessage");
+    const searchSuggestions = document.getElementById("searchSuggestions");
+    const searchClear = document.getElementById("searchClear");
+    const searchFeedback = document.getElementById("searchFeedback");
 
     // --- Logika Floating Search (BARU) ---
     const floatingSearchButton = document.getElementById(
@@ -50,47 +51,184 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- Logika Pencarian ---
     searchButton.addEventListener("click", () => {
-        performSearch(true); // Scroll jika klik tombol Cari
+        // Close suggestions when explicitly searching
+        searchSuggestions.classList.remove("show");
+        performSearch(true);
     });
 
-    // Tombol Clear (X) Logic
-    if (clearSearchBtn) {
-        clearSearchBtn.addEventListener("click", () => {
+    if (searchClear) {
+        searchClear.addEventListener("click", () => {
             searchInput.value = "";
-            clearSearchBtn.style.display = "none";
+            searchClear.style.display = "none";
+            searchSuggestions.classList.remove("show");
             searchFeedback.classList.remove("show");
-            performSearch(false); // Reset pencarian
-            searchInput.focus();
+            performSearch(false);
         });
     }
 
     // Logika Pencarian Baris 2: Search Input Enter Key
     searchInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
-            performSearch(true); // Scroll jika Enter
+            searchSuggestions.classList.remove("show");
+            performSearch(true);
         }
     });
 
-    // Perubahan: Gunakan event 'input' untuk live search + Debounce
-    let debounceTimer;
-    searchInput.addEventListener("input", () => {
-        clearTimeout(debounceTimer);
-        // Tampilkan tombol clear jika ada teks
-        if (clearSearchBtn) {
-            clearSearchBtn.style.display =
-                searchInput.value.length > 0 ? "block" : "none";
+    // Perubahan: Gunakan event 'input' untuk live search & suggestions
+    searchInput.addEventListener("input", function () {
+        const query = this.value.toLowerCase().trim();
+
+        // Show/hide clear button
+        if (searchClear) {
+            searchClear.style.display = query.length > 0 ? "block" : "none";
         }
 
-        debounceTimer = setTimeout(() => {
-            performSearch(false); // Jangan scroll otomatis saat mengetik
-        }, 300); // Tunggu 300ms setelah mengetik berhenti
+        if (query.length > 0) {
+            updateSuggestions(query);
+            // Live filtering
+            performSearch(false);
+        } else {
+            searchSuggestions.classList.remove("show");
+            searchFeedback.classList.remove("show");
+            performSearch(false);
+        }
     });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener("click", function (e) {
+        if (!heroSearchBox.contains(e.target)) {
+            searchSuggestions.classList.remove("show");
+        }
+    });
+
+    // Fungsi untuk mengumpulkan semua item yang bisa dicari
+    function collectSearchableItems() {
+        const items = [];
+
+        // Collect Story Items
+        const storySection = document.getElementById("story-section");
+        if (storySection) {
+            // Main story content
+            const h3 = storySection.querySelector(".story-content h3");
+            if (h3)
+                items.push({
+                    text: h3.textContent,
+                    element: storySection,
+                    type: "Sejarah",
+                });
+
+            // Slider items
+            const sliderItems = storySection.querySelectorAll(".card-item img");
+            sliderItems.forEach((img) => {
+                if (img.alt)
+                    items.push({
+                        text: img.alt,
+                        element: img.closest(".card-item"),
+                        type: "Sejarah",
+                    });
+            });
+        }
+
+        // Collect Tours
+        const tourCards = document.querySelectorAll(".tour-card");
+        tourCards.forEach((card) => {
+            const title = card.querySelector("h3").textContent;
+            items.push({ text: title, element: card, type: "Wisata" });
+        });
+
+        // Collect Culinary
+        const culinaryCards = document.querySelectorAll(".culinary-card");
+        culinaryCards.forEach((card) => {
+            const title = card.querySelector("h4").textContent;
+            items.push({ text: title, element: card, type: "Kuliner" });
+        });
+
+        // Collect Education
+        const eduCards = document.querySelectorAll(".education-card");
+        eduCards.forEach((card) => {
+            const title = card.querySelector("h3").textContent;
+            items.push({ text: title, element: card, type: "Pendidikan" });
+        });
+
+        // Collect Agenda
+        const agendaItems = document.querySelectorAll(".agenda-list-item");
+        agendaItems.forEach((item) => {
+            const title = item.querySelector("h4").textContent;
+            items.push({ text: title, element: item, type: "Agenda" });
+        });
+
+        // Collect Blog/Gallery
+        const blogs = document.querySelectorAll(".gallery-blog-card");
+        blogs.forEach((blog) => {
+            const title = blog.querySelector("h3").textContent;
+            items.push({ text: title, element: blog, type: "Blog" });
+        });
+
+        const fullCard = document.querySelector(".gallery-full-content h3");
+        if (fullCard) {
+            items.push({
+                text: fullCard.textContent,
+                element: fullCard.closest(".gallery-full-card"),
+                type: "Video",
+            });
+        }
+
+        return items;
+    }
+
+    // Fungsi update suggestion dropdown
+    function updateSuggestions(query) {
+        const allItems = collectSearchableItems();
+        const matches = allItems.filter((item) =>
+            item.text.toLowerCase().includes(query)
+        );
+
+        searchSuggestions.innerHTML = "";
+
+        if (matches.length > 0) {
+            matches.forEach((match) => {
+                const div = document.createElement("div");
+                div.className = "suggestion-item";
+                div.innerHTML = `${match.text} <span class="match-type">${match.type}</span>`;
+
+                div.addEventListener("click", () => {
+                    searchInput.value = match.text;
+                    searchSuggestions.classList.remove("show");
+                    performSearch(true);
+
+                    if (match.element) {
+                        setTimeout(() => {
+                            match.element.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center",
+                            });
+
+                            match.element.style.transition =
+                                "transform 0.3s, box-shadow 0.3s";
+                            match.element.style.transform = "scale(1.05)";
+                            match.element.style.boxShadow =
+                                "0 0 20px rgba(255, 215, 0, 0.6)";
+
+                            setTimeout(() => {
+                                match.element.style.transform = "";
+                                match.element.style.boxShadow = "";
+                            }, 1500);
+                        }, 300);
+                    }
+                });
+
+                searchSuggestions.appendChild(div);
+            });
+
+            searchSuggestions.classList.add("show");
+        } else {
+            searchSuggestions.classList.remove("show");
+        }
+    }
 
     // Logika Pencarian Baris 3: Fungsi inti (Diperbarui untuk pencarian teks penuh dan filtering total)
-    function performSearch(shouldScroll = false) {
+    function performSearch(showFeedback = false) {
         const query = searchInput.value.toLowerCase().trim();
-        let totalMatches = 0;
-        let firstMatchSection = null;
 
         // Fungsi helper untuk toggle visibility item
         const toggleItem = (item, shouldShow) => {
@@ -103,8 +241,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Khusus untuk education card yang mungkin punya class hidden-card dari filter kategori
                 if (item.classList.contains("hidden-card")) {
                     item.classList.remove("hidden-card");
+                    // Tandai bahwa ini dibuka oleh search agar nanti bisa dikembalikan (opsional, untuk simplicitas kita buka saja)
                 }
-                totalMatches++;
             } else {
                 item.classList.add("hidden-search-item");
             }
@@ -123,6 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
                 // Kembalikan state awal education cards (hidden-card logic)
+                // Karena kita tidak menyimpan state filter sebelumnya, kita reset ke filter default "univ"
                 if (section.id === "education-section") {
                     const eduCards =
                         section.querySelectorAll(".education-card");
@@ -141,11 +280,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
             noResultsMessage.classList.add("hidden-section");
-            if (searchFeedback) searchFeedback.classList.remove("show");
+            if (showFeedback) {
+                searchFeedback.classList.remove("show");
+            }
             return;
         }
 
         let foundGlobalMatch = false;
+        let matchCount = 0;
 
         // Loop setiap section
         allContentSections.forEach((section) => {
@@ -166,6 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (imgAlt.includes(query)) {
                         toggleItem(item, true);
                         hasCardMatch = true;
+                        matchCount++;
                     } else {
                         toggleItem(item, false);
                     }
@@ -174,8 +317,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Show section if text matches OR if any card matches
                 if (contentText.includes(query) || hasCardMatch) {
                     sectionHasMatch = true;
-                    // Jika match di text content utama, hitung sebagai 1 hasil
-                    if (contentText.includes(query)) totalMatches++;
+                    if (contentText.includes(query) && !hasCardMatch)
+                        matchCount++; // Count main story as 1
                 }
             }
             // 2. Cek Section Nearby (Header Text Only - Map is excluded)
@@ -185,7 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     .textContent.toLowerCase();
                 if (headerText.includes(query)) {
                     sectionHasMatch = true;
-                    totalMatches++;
+                    matchCount++;
                 }
             }
             // 3. Cek Section Lainnya (Card Based)
@@ -201,6 +344,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (text.includes(query)) {
                             toggleItem(item, true);
                             sectionHasMatch = true;
+                            matchCount++;
                         } else {
                             toggleItem(item, false);
                         }
@@ -209,7 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Fallback jika tidak ada item spesifik (misal hanya teks deskripsi section)
                     if (section.textContent.toLowerCase().includes(query)) {
                         sectionHasMatch = true;
-                        totalMatches++;
+                        matchCount++;
                     }
                 }
             }
@@ -218,32 +362,37 @@ document.addEventListener("DOMContentLoaded", function () {
             if (sectionHasMatch) {
                 section.classList.remove("hidden-section");
                 foundGlobalMatch = true;
-                if (!firstMatchSection) firstMatchSection = section;
             } else {
                 section.classList.add("hidden-section");
             }
         });
 
-        // Tampilkan pesan "Tidak Ada Hasil" atau Feedback Jumlah
+        // Tampilkan pesan "Tidak Ada Hasil"
         if (foundGlobalMatch) {
             noResultsMessage.classList.add("hidden-section");
-            if (searchFeedback) {
-                searchFeedback.innerText = `Ditemukan ${totalMatches} hasil`;
+            if (showFeedback) {
+                searchFeedback.textContent = `Ditemukan ${matchCount} hasil untuk "${query}"`;
                 searchFeedback.classList.add("show");
-            }
+                setTimeout(() => {
+                    searchFeedback.classList.remove("show");
+                }, 3000);
 
-            // Scroll hanya jika diminta (tombol cari/enter)
-            if (shouldScroll && firstMatchSection) {
-                firstMatchSection.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                });
+                // Scroll to first visible section
+                const firstVisible = document.querySelector(
+                    ".page-content > section:not(.hidden-section)"
+                );
+                if (firstVisible) {
+                    firstVisible.scrollIntoView({ behavior: "smooth" });
+                }
             }
         } else {
             noResultsMessage.classList.remove("hidden-section");
-            if (searchFeedback) searchFeedback.classList.remove("show");
-            // Selalu scroll ke pesan "tidak ada hasil" jika tidak ada match
-            if (shouldScroll) {
+            if (showFeedback) {
+                searchFeedback.textContent = `Tidak ditemukan hasil untuk "${query}"`;
+                searchFeedback.classList.add("show");
+                setTimeout(() => {
+                    searchFeedback.classList.remove("show");
+                }, 3000);
                 noResultsMessage.scrollIntoView({ behavior: "smooth" });
             }
         }
@@ -324,6 +473,7 @@ function initializeVideoModal() {
 
     // Fungsi untuk mengekstrak ID YouTube dari URL atau ID langsung
     const extractVideoId = (url) => {
+        if (!url) return null;
         // Kasus 1: ID langsung (misalnya, 'dQw4w9WgXcQ')
         if (!url.includes("http")) {
             return url;
@@ -363,25 +513,30 @@ function initializeVideoModal() {
         document.body.style.overflow = "";
     };
 
-    // Event listener untuk tombol "Jelajahi Kota"
-    if (btnJelajahi) {
-        btnJelajahi.addEventListener("click", (e) => {
-            e.preventDefault();
-            // Menggunakan ID placeholder yang teruji
-            const videoId = btnJelajahi.dataset.videoId;
-            openModal(videoId);
-        });
-    }
+    // Helper function agar tidak perlu menulis ulang kode untuk setiap tombol
+    const bindModalButton = (buttonElement) => {
+        if (buttonElement) {
+            buttonElement.addEventListener("click", (e) => {
+                e.preventDefault();
+                // MENGAMBIL ID LANGSUNG DARI HTML SAAT DI-KLIK
+                // Ini memastikan data yang diambil adalah yang terbaru dari atribut HTML
+                const currentVideoId =
+                    buttonElement.getAttribute("data-video-id");
 
-    // Event listener untuk tombol "Cek Layanan"
-    if (btnLayanan) {
-        btnLayanan.addEventListener("click", (e) => {
-            e.preventDefault();
-            // Menggunakan ID placeholder yang teruji
-            const videoId = btnLayanan.dataset.videoId;
-            openModal(videoId);
-        });
-    }
+                if (currentVideoId) {
+                    openModal(currentVideoId);
+                } else {
+                    console.warn(
+                        "Data video ID tidak ditemukan pada tombol ini."
+                    );
+                }
+            });
+        }
+    };
+
+    // Terapkan logika ke kedua tombol
+    bindModalButton(btnJelajahi);
+    bindModalButton(btnLayanan);
 
     // Event listener untuk tombol Close (X)
     if (closeBtn) {
@@ -689,26 +844,34 @@ function initializeAgendaInteractivity() {
             // 1. Hapus kelas active dari semua item
             agendaItems.forEach((i) => i.classList.remove("active"));
 
+            // 2. Tambahkan kelas active ke item yang diklik
             this.classList.add("active");
 
+            // 3. Ambil data dari item yang diklik
             const newImageSrc = this.getAttribute("data-image");
             const newTitleText = this.querySelector(
                 ".agenda-item-info h4"
             ).innerText;
 
+            // 4. Update card preview dengan efek fade dan slide halus
+            // State 1: Fade Out & Slide Down sedikit
             previewImage.style.opacity = "0";
             previewTitle.style.opacity = "0";
             previewTitle.style.transform = "translateY(10px)";
 
             setTimeout(() => {
+                // State 2: Ganti Konten (saat tidak terlihat)
                 if (newImageSrc) previewImage.src = newImageSrc;
                 previewTitle.innerText = newTitleText;
+
+                // State 3: Fade In & Slide Up kembali (setelah konten terganti)
+                // Gunakan requestAnimationFrame atau sedikit delay agar browser merender perubahan konten dulu
                 requestAnimationFrame(() => {
                     previewImage.style.opacity = "1";
                     previewTitle.style.opacity = "1";
                     previewTitle.style.transform = "translateY(0)";
                 });
-            }, 300);
+            }, 300); // Waktu tunggu sesuai durasi transisi CSS (0.3s)
         });
     });
 }
