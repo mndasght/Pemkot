@@ -7,13 +7,17 @@
             <h1>Selamat Datang di <span>Kota Kediri</span></h1>
             <p>Jelajahi Pesona Sejarah, Budaya, dan Wisata</p>
             <div class="search-box" id="heroSearchBox">
-                <span class="material-symbols-outlined">search</span>
+                <span class="material-symbols-outlined search-icon">search</span>
                 <input type="text" id="searchInput" placeholder="Cari destinasi, tempat makan, atau budaya...">
+                <span id="clearSearch" class="material-symbols-outlined clear-icon">close</span>
                 <button type="button" id="searchButton">Cari</button>
             </div>
+            <!-- Feedback Hasil Pencarian -->
+            <div id="searchFeedback" class="search-feedback"></div>
+
             <div class="hero-cta-group">
-                <a href="#" class="cta-btn" id="btn-jelajahi-kota" data-video-id="dQw4w9WgXcQ">Jelajahi Kota</a>
-                <a href="#" class="cta-btn" id="btn-cek-layanan" data-video-id="dQw4w9WgXcQ">Cek Layanan</a>
+                <a href="#" class="cta-btn" id="btn-jelajahi-kota" data-video-id="iKUdILVt41o">Jelajahi Kota</a>
+                <a href="#" class="cta-btn" id="btn-cek-layanan" data-video-id="2iRu7qsSfCw">Cek Layanan</a>
             </div>
         </div>
         <div class="hero-bottom-bar" id="scrollToStory">
@@ -61,16 +65,16 @@
                         <div class="card-item"
                             data-background="https://kediripedia.com/wp-content/uploads/2024/03/COLLECTIE_TROPENMUSEUM_Verhoogde_Brantasbrug_te_Kediri_Oost-Java_TMnr_10007564-1.jpg">
                             <img src="https://kediripedia.com/wp-content/uploads/2024/03/COLLECTIE_TROPENMUSEUM_Verhoogde_Brantasbrug_te_Kediri_Oost-Java_TMnr_10007564-1.jpg"
-                                alt="Candi Penataran">
+                                alt="Jembatan Lama">
                         </div>
                         <div class="card-item" data-background="{{ asset('image/goa.webp') }}">
-                            <img src="{{ asset('image/goa.webp') }}" alt="Gua Selomangleng">
+                            <img src="{{ asset('image/goa.webp') }}" alt="Goa Selomangleng">
                         </div>
                         <div class="card-item" data-background="{{ asset('image/museum.webp') }}">
                             <img src="{{ asset('image/museum.webp') }}" alt="Museum Airlangga">
                         </div>
-                        <div class="card-item" data-background="{{ asset('image/gunungklotok.png') }}">
-                            <img src="{{ asset('image/gunungklotok.png') }}" alt="Gunung Klotok">
+                        <div class="card-item" data-background="{{ asset('image/heronew.png') }}">
+                            <img src="{{ asset('image/heronew.png') }}" alt="Gereja Merah">
                         </div>
                     </div>
                     <button class="slider-arrow" id="next-slide" aria-label="Slide berikutnya">
@@ -109,7 +113,7 @@
             <div class="popular-tours-container">
                 <div class="popular-tours-header animate-on-scroll animate-slide-up">
                     <h2>Tempat Wisata yang Populer</h2>
-                    <a href="#" class="btn-more">Selengkapnya</a>
+                    <a href="{{ url('/wisata') }}" class="btn-more">Selengkapnya</a>
                 </div>
                 <div class="popular-tours-slider-wrapper animate-on-scroll animate-stagger">
                     <button class="slider-arrow" id="prev-tour-slide" aria-label="Slide sebelumnya">
@@ -123,13 +127,15 @@
                             </div>
                         </div>
                         <div class="tour-card">
-                            <img src="{{ asset('image/goa.webp') }}" alt="Goa Selomangkleng">
+                            <img src="{{ asset('image/goa.webp') }}"
+                                alt="Goa Selomangkleng">
                             <div class="tour-card-title">
                                 <h3>Goa Selomangkleng, Mojoroto</h3>
                             </div>
                         </div>
                         <div class="tour-card">
-                            <img src="{{ asset('image/taman_sekartaji.webp') }}" alt="Taman Sekartaji">
+                            <img src="{{ asset('image/taman_sekartaji.webp') }}"
+                                alt="Taman Sekartaji">
                             <div class="tour-card-title">
                                 <h3>Taman Sekartaji, Mojoroto
                                 </h3>
@@ -142,7 +148,8 @@
                             </div>
                         </div>
                         <div class="tour-card">
-                            <img src="{{ asset('image/museum.webp') }}" alt="Museum Airlangga">
+                            <img src="{{ asset('image/museum.webp') }}"
+                                alt="Museum Airlangga">
                             <div class="tour-card-title">
                                 <h3>Museum Airlangga, Mojoroto</h3>
                             </div>
@@ -154,6 +161,8 @@
                 </div>
             </div>
         </section>
+
+
 
         <section class="section-culinary" id="culinary-section">
             <div class="culinary-container">
@@ -360,19 +369,7 @@
                         <!-- Kategori: Sekolah Dasar (SD) -->
                         <div class="education-card hidden-card" data-category="sd">
                             <div class="education-card-image-wrapper">
-                                <img src="https://placehold.co/400x500/FFD700/333333?text=SDN+Banjaran+4"
-                                    alt="SDN Banjaran 4">
-                            </div>
-                            <div class="education-card-info">
-                                <span class="type">Sekolah Dasar</span>
-                                <h3>SDN Banjaran 4</h3>
-                                <p class="description">Salah satu sekolah dasar favorit dengan segudang prestasi akademik
-                                    dan non-akademik di Kota Kediri.</p>
-                            </div>
-                        </div>
-                        <div class="education-card hidden-card" data-category="sd">
-                            <div class="education-card-image-wrapper">
-                                <img src="https://placehold.co/400x500/0D7DA3/FFFFFF?text=SD+Santa+Maria"
+                                <img src="https://placehold.co/400x500/FFD700/333333?text=SD+Santa+Maria"
                                     alt="SDK Santa Maria">
                             </div>
                             <div class="education-card-info">
@@ -384,7 +381,7 @@
                         </div>
                         <div class="education-card hidden-card" data-category="sd">
                             <div class="education-card-image-wrapper">
-                                <img src="https://placehold.co/400x500/1E90FF/FFFFFF?text=SD+Plus+Rahmat"
+                                <img src="https://placehold.co/400x500/0D7DA3/FFFFFF?text=SD+Plus+Rahmat"
                                     alt="SD Plus Rahmat">
                             </div>
                             <div class="education-card-info">
@@ -392,6 +389,18 @@
                                 <h3>SD Plus Rahmat</h3>
                                 <p class="description">Sekolah dasar berbasis Islam terpadu yang memadukan kurikulum
                                     nasional dan keagamaan.</p>
+                            </div>
+                        </div>
+                        <div class="education-card hidden-card" data-category="sd">
+                            <div class="education-card-image-wrapper">
+                                <img src="https://placehold.co/400x500/1E90FF/FFFFFF?text=SDN+Banjaran+4"
+                                    alt="SDN Banjaran 4">
+                            </div>
+                            <div class="education-card-info">
+                                <span class="type">Sekolah Dasar</span>
+                                <h3>SDN Banjaran 4</h3>
+                                <p class="description">Salah satu sekolah dasar favorit dengan segudang prestasi akademik
+                                    dan non-akademik di Kota Kediri.</p>
                             </div>
                         </div>
 
@@ -487,6 +496,7 @@
                             <span class="title-up">Upcoming</span>
                             <span class="title-down">Agenda</span>
                         </div>
+                        <span class="material-symbols-outlined agenda-title-arrow">arrow_right_alt</span>
                     </div>
 
                     <h3>Agenda yang akan datang di Kota Kediri</h3>
@@ -585,9 +595,9 @@
                         <img src="{{ asset('image/gunungklotok.png') }}" alt="Blog Image">
                         <div class="gallery-blog-info">
                             <div class="blog-date">10 NOVEMBER 2025</div>
-                            <h3>Menjelajahi Keindahan Tersembunyi di Air Terjun Dolo</h3>
+                            <h3>Menjelajahi Keindahan Tersembunyi di Kota Kediri</h3>
                             <p>
-                                Temukan pesona Air Terjun Dolo yang menawan, surga tersembunyi di lereng Gunung Wilis
+                                Temukan pesona Kota Kediri, surga tersembunyi di lereng Gunung Wilis
                                 yang
                                 menawarkan kesegaran dan pemandangan...
                             </p>
@@ -607,7 +617,7 @@
                         </div>
                     </div>
                     <div class="gallery-full-card animate-on-scroll animate-slide-up"
-                        style="background-image: url('https://placehold.co/1200x800/1E90FF/FFFFFF?text=Simpang+Lima+Gumul+Malam');">
+                        style="background-image: url('{{ asset('image/gunungklotok.png') }}');">
                         <div class="gallery-full-content">
                             <h3>Video Terbaru: Pesona Malam Hari Kota Kediri</h3>
                             <p>Lihat bagaimana ikon Kota Kediri ini bersinar di malam hari.</p>
