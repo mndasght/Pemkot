@@ -29,10 +29,10 @@
     <nav class="navbar">
         <div class="logo">KediriMapan</div>
         <ul class="nav-links" id="navLinks">
-            <li><a href="#hero-section">Beranda</a></li>
-            <li><a href="#story-section">Sejarah</a></li>
-            <li><a href="#nearby-section">Wisata</a></li>
-            <li><a href="#tours-section">Kuliner</a></li>
+            <li><a href="#">Beranda</a></li>
+            <li><a href="#">Sejarah</a></li>
+            <li><a href="#">Wisata</a></li>
+            <li><a href="#">Event</a></li>
             <li><a href="#">Berita</a></li>
             <li><a href="#">Kontak</a></li>
         </ul>
@@ -42,6 +42,7 @@
             <div class="line"></div>
         </div>
     </nav>
+
     @yield('content')
     <!-- ==== FOOTER BARU ==== -->
 
@@ -52,7 +53,7 @@
         <!-- Konten Lapor (BARU) -->
         <div class="lapor-content-wrapper">
             <div class="lapor-image">
-                <img src="{{ asset('image/112.png') }}">
+                <img src="{{ asset('image/112.png') }}" alt="Lapor Mbak Wali">
             </div>
             <div class="lapor-details">
                 <h2>Lapor Mbak Wali 112</h2>
@@ -66,7 +67,7 @@
             </div>
             <!-- GAMBAR KANAN BARU -->
             <div class="lapor-image">
-                <img src="https://placehold.co/400x350/ffffff/1E90FF?text=QR+Code+Lapor"
+                <img src=""
                     alt="Layanan Lapor Mbak Wali via QR Code">
             </div>
         </div>
@@ -77,7 +78,7 @@
         <div class="footer-container">
             <!-- Kolom 1: Logo & Semboyan -->
             <div class="footer-column">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Logo_Kota_Kediri_-_Seal_of_Kediri_City.svg/1957px-Logo_Kota_Kediri_-_Seal_of_Kediri_City.svg.png" alt="Logo Pemkot Kediri"
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Logo_Kota_Kediri_-_Seal_of_Kediri_City.svg" alt="Logo Pemkot Kediri"
                     class="footer-logo">
                 <p>"Kediri Harmoni, Kota Berbudaya dan Melayani"</p>
             </div>
@@ -117,10 +118,10 @@
                 <h3>Social Media</h3>
                 <div class="footer-social-links">
                     <!-- Placeholder untuk ikon, menggunakan inisial -->
-                    <a href="#" class="icon-fb" aria-label="Facebook"></a>
-                    <a href="#" class="icon-tw" aria-label="Twitter"></a>
-                    <a href="#" class="icon-ig" aria-label="Instagram"></a>
-                    <a href="#" class="icon-yt" aria-label="YouTube"></a>
+                    <a href="#" class="fa-brands fa-facebook-f" aria-label="Facebook"></a>
+                    <a href="#" class="fa-brands fa-twitter" aria-label="Twitter"></a>
+                    <a href="#" class="fa-brands fa-instagram" aria-label="Instagram"></a>
+                    <a href="#" class="fa-brands fa-youtube" aria-label="YouTube"></a>
                 </div>
             </div>
         </div>

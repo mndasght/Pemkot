@@ -32,6 +32,27 @@ body {
     --gallery-title-color: var(--primary-color);
 }
 
+/* ==== CLASS PENTING UNTUK PENCARIAN DINAMIS ==== */
+.hidden-search-item {
+    display: none !important;
+}
+
+/* Animation untuk item yang muncul hasil pencarian */
+.search-match {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* ==== Floating Search Button ==== */
 #floatingSearchButton {
     position: fixed;
@@ -223,13 +244,29 @@ body {
     border: 1px solid var(--accent-color);
 }
 
-.search-box .material-symbols-outlined {
+.search-box .material-symbols-outlined.search-icon {
     position: absolute;
     left: 18px;
     font-size: 22px;
     color: rgba(255, 255, 255, 0.8);
     pointer-events: none;
     z-index: 2;
+}
+
+/* Tombol Clear (X) Baru */
+.search-box .clear-icon {
+    position: absolute;
+    right: 100px; /* Di sebelah kiri tombol Cari */
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    z-index: 3;
+    transition: color 0.3s;
+    display: none; /* Hidden by default */
+}
+
+.search-box .clear-icon:hover {
+    color: var(--white-color);
 }
 
 .search-box button {
@@ -257,6 +294,24 @@ body {
 
 .search-box button:active {
     transform: translateY(-50%) scale(0.98);
+}
+
+/* Feedback Hasil Pencarian */
+.search-feedback {
+    position: absolute;
+    bottom: -30px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.search-feedback.show {
+    opacity: 1;
 }
 
 /* ==== Hero CTA Group ==== */
@@ -375,27 +430,21 @@ body {
 .section-story {
     z-index: 6;
 }
-
 .section-nearby-places {
     z-index: 5;
 }
-
 .section-popular-tours {
     z-index: 4;
 }
-
 .section-culinary {
     z-index: 3;
 }
-
 .section-education {
     z-index: 2;
 }
-
 .section-agenda {
     z-index: 1;
 }
-
 .section-gallery {
     z-index: 0;
 }
@@ -2244,7 +2293,7 @@ body {
     height: 300px;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: none;
     background-color: transparent;
 }
 
@@ -2252,6 +2301,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
 }
 
 .lapor-details {

@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Elemen pencarian baru
     const searchInput = document.getElementById("searchInput");
     const searchButton = document.getElementById("searchButton");
+    const clearSearchBtn = document.getElementById("clearSearch");
+    const searchFeedback = document.getElementById("searchFeedback");
     const allContentSections = document.querySelectorAll(
         ".page-content > section"
     );
@@ -48,66 +50,202 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- Logika Pencarian ---
     searchButton.addEventListener("click", () => {
-        performSearch();
+        performSearch(true); // Scroll jika klik tombol Cari
     });
+
+    // Tombol Clear (X) Logic
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener("click", () => {
+            searchInput.value = "";
+            clearSearchBtn.style.display = "none";
+            searchFeedback.classList.remove("show");
+            performSearch(false); // Reset pencarian
+            searchInput.focus();
+        });
+    }
 
     // Logika Pencarian Baris 2: Search Input Enter Key
     searchInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
-            performSearch();
+            performSearch(true); // Scroll jika Enter
         }
     });
 
+    // Perubahan: Gunakan event 'input' untuk live search + Debounce
+    let debounceTimer;
+    searchInput.addEventListener("input", () => {
+        clearTimeout(debounceTimer);
+        // Tampilkan tombol clear jika ada teks
+        if (clearSearchBtn) {
+            clearSearchBtn.style.display =
+                searchInput.value.length > 0 ? "block" : "none";
+        }
+
+        debounceTimer = setTimeout(() => {
+            performSearch(false); // Jangan scroll otomatis saat mengetik
+        }, 300); // Tunggu 300ms setelah mengetik berhenti
+    });
+
     // Logika Pencarian Baris 3: Fungsi inti (Diperbarui untuk pencarian teks penuh dan filtering total)
-    function performSearch() {
+    function performSearch(shouldScroll = false) {
         const query = searchInput.value.toLowerCase().trim();
+        let totalMatches = 0;
+        let firstMatchSection = null;
+
+        // Fungsi helper untuk toggle visibility item
+        const toggleItem = (item, shouldShow) => {
+            if (shouldShow) {
+                item.classList.remove("hidden-search-item");
+                item.classList.add("search-match"); // Add animation class
+                // Remove animation class after animation completes so it can re-trigger later if needed
+                setTimeout(() => item.classList.remove("search-match"), 500);
+
+                // Khusus untuk education card yang mungkin punya class hidden-card dari filter kategori
+                if (item.classList.contains("hidden-card")) {
+                    item.classList.remove("hidden-card");
+                }
+                totalMatches++;
+            } else {
+                item.classList.add("hidden-search-item");
+            }
+        };
 
         if (query === "") {
-            // Tampilkan semua section jika query kosong
+            // Reset: Tampilkan semua section dan item
             allContentSections.forEach((section) => {
                 section.classList.remove("hidden-section");
+                // Reset semua item yang mungkin disembunyikan
+                const items = section.querySelectorAll(
+                    ".tour-card, .culinary-card, .education-card, .agenda-list-item, .gallery-blog-card, .gallery-video-card, .card-item"
+                );
+                items.forEach((item) =>
+                    item.classList.remove("hidden-search-item")
+                );
+
+                // Kembalikan state awal education cards (hidden-card logic)
+                if (section.id === "education-section") {
+                    const eduCards =
+                        section.querySelectorAll(".education-card");
+                    eduCards.forEach((c) => {
+                        if (c.dataset.category !== "univ")
+                            c.classList.add("hidden-card");
+                        else c.classList.remove("hidden-card");
+                    });
+                    // Reset active button
+                    const buttons = section.querySelectorAll(".filter-btn");
+                    buttons.forEach((b) => b.classList.remove("active"));
+                    const defaultBtn = section.querySelector(
+                        '.filter-btn[data-filter="univ"]'
+                    );
+                    if (defaultBtn) defaultBtn.classList.add("active");
+                }
             });
             noResultsMessage.classList.add("hidden-section");
-            document
-                .getElementById("story-section")
-                .scrollIntoView({ behavior: "smooth" });
+            if (searchFeedback) searchFeedback.classList.remove("show");
             return;
         }
 
-        let foundMatch = false;
-        let firstMatchSection = null;
+        let foundGlobalMatch = false;
 
-        // 1. Sembunyikan semua section dan pesan "Tidak Ada Hasil" di awal
+        // Loop setiap section
         allContentSections.forEach((section) => {
-            section.classList.add("hidden-section");
-        });
-        noResultsMessage.classList.add("hidden-section");
+            let sectionHasMatch = false;
 
-        // 2. Loop dan cari kecocokan di SEMUA section (termasuk Story dan Nearby)
-        allContentSections.forEach((section) => {
-            // Ambil SEMUA teks yang terlihat di dalam section
-            const content = section.textContent || "";
+            // 1. Cek Section Story
+            if (section.id === "story-section") {
+                const contentText = section
+                    .querySelector(".story-content")
+                    .textContent.toLowerCase();
+                const cardItems = section.querySelectorAll(".card-item");
+                let hasCardMatch = false;
 
-            if (content.toLowerCase().includes(query)) {
-                section.classList.remove("hidden-section");
-                foundMatch = true;
-                if (!firstMatchSection) {
-                    firstMatchSection = section;
+                // Filter individual cards in Story section
+                cardItems.forEach((item) => {
+                    const imgAlt =
+                        item.querySelector("img")?.alt?.toLowerCase() || "";
+                    if (imgAlt.includes(query)) {
+                        toggleItem(item, true);
+                        hasCardMatch = true;
+                    } else {
+                        toggleItem(item, false);
+                    }
+                });
+
+                // Show section if text matches OR if any card matches
+                if (contentText.includes(query) || hasCardMatch) {
+                    sectionHasMatch = true;
+                    // Jika match di text content utama, hitung sebagai 1 hasil
+                    if (contentText.includes(query)) totalMatches++;
                 }
             }
+            // 2. Cek Section Nearby (Header Text Only - Map is excluded)
+            else if (section.id === "nearby-section") {
+                const headerText = section
+                    .querySelector(".nearby-places-header")
+                    .textContent.toLowerCase();
+                if (headerText.includes(query)) {
+                    sectionHasMatch = true;
+                    totalMatches++;
+                }
+            }
+            // 3. Cek Section Lainnya (Card Based)
+            else {
+                // Seleksi semua item yang mungkin ada di section ini
+                const items = section.querySelectorAll(
+                    ".tour-card, .culinary-card, .education-card, .agenda-list-item, .gallery-blog-card, .gallery-video-card, .gallery-full-card"
+                );
+
+                if (items.length > 0) {
+                    items.forEach((item) => {
+                        const text = item.textContent.toLowerCase();
+                        if (text.includes(query)) {
+                            toggleItem(item, true);
+                            sectionHasMatch = true;
+                        } else {
+                            toggleItem(item, false);
+                        }
+                    });
+                } else {
+                    // Fallback jika tidak ada item spesifik (misal hanya teks deskripsi section)
+                    if (section.textContent.toLowerCase().includes(query)) {
+                        sectionHasMatch = true;
+                        totalMatches++;
+                    }
+                }
+            }
+
+            // Tampilkan/Sembunyikan Section berdasarkan apakah ada match di dalamnya
+            if (sectionHasMatch) {
+                section.classList.remove("hidden-section");
+                foundGlobalMatch = true;
+                if (!firstMatchSection) firstMatchSection = section;
+            } else {
+                section.classList.add("hidden-section");
+            }
         });
 
-        // 3. Tampilkan pesan "Tidak Ada Hasil" atau gulir ke hasil pertama
-        if (foundMatch) {
-            // Gulir ke section pertama yang ditemukan
-            if (firstMatchSection) {
-                firstMatchSection.scrollIntoView({ behavior: "smooth" });
+        // Tampilkan pesan "Tidak Ada Hasil" atau Feedback Jumlah
+        if (foundGlobalMatch) {
+            noResultsMessage.classList.add("hidden-section");
+            if (searchFeedback) {
+                searchFeedback.innerText = `Ditemukan ${totalMatches} hasil`;
+                searchFeedback.classList.add("show");
+            }
+
+            // Scroll hanya jika diminta (tombol cari/enter)
+            if (shouldScroll && firstMatchSection) {
+                firstMatchSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
             }
         } else {
-            // Tampilkan pesan "Tidak Ada Hasil"
             noResultsMessage.classList.remove("hidden-section");
-            // Gulir ke pesan notifikasi
-            noResultsMessage.scrollIntoView({ behavior: "smooth" });
+            if (searchFeedback) searchFeedback.classList.remove("show");
+            // Selalu scroll ke pesan "tidak ada hasil" jika tidak ada match
+            if (shouldScroll) {
+                noResultsMessage.scrollIntoView({ behavior: "smooth" });
+            }
         }
     }
     // --- End Logika Pencarian ---
@@ -230,7 +368,7 @@ function initializeVideoModal() {
         btnJelajahi.addEventListener("click", (e) => {
             e.preventDefault();
             // Menggunakan ID placeholder yang teruji
-            const videoId = "dQw4w9WgXcQ";
+            const videoId = btnJelajahi.dataset.videoId;
             openModal(videoId);
         });
     }
@@ -240,7 +378,7 @@ function initializeVideoModal() {
         btnLayanan.addEventListener("click", (e) => {
             e.preventDefault();
             // Menggunakan ID placeholder yang teruji
-            const videoId = "dQw4w9WgXcQ";
+            const videoId = btnLayanan.dataset.videoId;
             openModal(videoId);
         });
     }
@@ -551,34 +689,26 @@ function initializeAgendaInteractivity() {
             // 1. Hapus kelas active dari semua item
             agendaItems.forEach((i) => i.classList.remove("active"));
 
-            // 2. Tambahkan kelas active ke item yang diklik
             this.classList.add("active");
 
-            // 3. Ambil data dari item yang diklik
             const newImageSrc = this.getAttribute("data-image");
             const newTitleText = this.querySelector(
                 ".agenda-item-info h4"
             ).innerText;
 
-            // 4. Update card preview dengan efek fade dan slide halus
-            // State 1: Fade Out & Slide Down sedikit
             previewImage.style.opacity = "0";
             previewTitle.style.opacity = "0";
             previewTitle.style.transform = "translateY(10px)";
 
             setTimeout(() => {
-                // State 2: Ganti Konten (saat tidak terlihat)
                 if (newImageSrc) previewImage.src = newImageSrc;
                 previewTitle.innerText = newTitleText;
-
-                // State 3: Fade In & Slide Up kembali (setelah konten terganti)
-                // Gunakan requestAnimationFrame atau sedikit delay agar browser merender perubahan konten dulu
                 requestAnimationFrame(() => {
                     previewImage.style.opacity = "1";
                     previewTitle.style.opacity = "1";
                     previewTitle.style.transform = "translateY(0)";
                 });
-            }, 300); // Waktu tunggu sesuai durasi transisi CSS (0.3s)
+            }, 300);
         });
     });
 }
